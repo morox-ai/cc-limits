@@ -9,8 +9,8 @@ polls the Anthropic usage endpoint.
 
 ## Build
 
-Requires the system Swift toolchain (Xcode Command Line Tools) — no Xcode project
-and no external dependencies.
+Requires macOS 12 (Monterey) or newer and the system Swift toolchain (Xcode
+Command Line Tools) — no Xcode project and no external dependencies.
 
 ```sh
 bash build.sh
@@ -44,3 +44,9 @@ before loading.
 The app reads the Claude Code OAuth credential from the macOS keychain (the
 `Claude Code-credentials` generic password) to query the Anthropic usage
 endpoint. On first launch macOS may prompt to allow keychain access.
+
+Because the LaunchAgent starts the app via `launchd`, the first keychain prompt
+can appear in a non-interactive context. If the menu bar item stays on the dim
+`∞` placeholder, launch the app once manually (`open ClaudeCodeLimits.app`) and
+choose "Always Allow" on the keychain prompt so it can read the credential
+unattended thereafter.

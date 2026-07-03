@@ -54,9 +54,22 @@ private func parseResetsAt(_ string: String) -> Date? {
     if let date = resetsAtFormatter.date(from: string) {
         return date
     }
+    let normalized = string.replacingOccurrences(
+        of: #"\.(\d{3})\d+"#,
+        with: ".$1",
+        options: .regularExpression
+    )
+    if let date = resetsAtFormatter.date(from: normalized) {
+        return date
+    }
     let fallback = ISO8601DateFormatter()
     fallback.formatOptions = [.withInternetDateTime]
-    return fallback.date(from: string)
+    let noFraction = string.replacingOccurrences(
+        of: #"\.\d+"#,
+        with: "",
+        options: .regularExpression
+    )
+    return fallback.date(from: noFraction)
 }
 
 private func parseWindow(_ dict: [String: Any]?) -> WindowUsage? {
@@ -89,6 +102,7 @@ func fetchUsage(completion: @escaping ((fiveHour: WindowUsage, sevenDay: WindowU
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        request.timeoutInterval = 10
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.setValue("oauth-2025-04-20", forHTTPHeaderField: "anthropic-beta")
 
