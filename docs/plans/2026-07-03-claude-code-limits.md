@@ -151,11 +151,11 @@ correct reset times; `Refresh now` re-fetches; `Quit` exits.
 
 Create `build.sh` that produces a double-clickable/loadable app.
 
-- [ ] Compile: `swiftc main.swift -o ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits`.
-- [ ] Generate `ClaudeCodeLimits.app/Contents/Info.plist` with `LSUIElement=true`,
+- [x] Compile: `swiftc main.swift -o ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits`.
+- [x] Generate `ClaudeCodeLimits.app/Contents/Info.plist` with `LSUIElement=true`,
   `CFBundleName=ClaudeCodeLimits`, `CFBundleExecutable=ClaudeCodeLimits`,
   `CFBundleIdentifier=ai.morox.cc-limits`, and a bundle version.
-- [ ] Create the `Contents/MacOS` directory tree as needed; make the script
+- [x] Create the `Contents/MacOS` directory tree as needed; make the script
   idempotent (safe to re-run).
 
 **Acceptance:** `bash build.sh` exits 0 and produces `ClaudeCodeLimits.app`;
