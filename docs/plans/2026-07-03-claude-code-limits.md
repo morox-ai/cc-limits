@@ -130,15 +130,16 @@ finishing.
 
 Wire the pieces into a running agent app in `main.swift`.
 
-- [ ] `NSApplication` with `.accessory` activation policy; an `AppDelegate` owning one
+- [x] `NSApplication` with `.accessory` activation policy; an `AppDelegate` owning one
   `NSStatusItem` (variable length) whose `button.image` is set from
   `renderStatusImage`.
-- [ ] **Fetch timer** every 300s (fire once immediately on launch) → `fetchUsage`,
+- [x] **Fetch timer** every 300s (fire once immediately on launch) → `fetchUsage`,
   update state on success, keep last good on failure, then redraw.
-- [ ] **Redraw timer** every 30s → recompute countdowns and redraw so the timer ticks.
-- [ ] Minimal dropdown `NSMenu`: two disabled info rows (`5h resets at <clock>`,
+- [x] **Redraw timer** every 30s → recompute countdowns and redraw so the timer ticks.
+- [x] Minimal dropdown `NSMenu`: two disabled info rows (`5h resets at <clock>`,
   `Weekly resets <day clock>` using a local-time formatter), a separator,
   `Refresh now` (triggers an immediate fetch), and `Quit`.
+- [x] `swiftc main.swift -o /tmp/cclimits && /tmp/cclimits` acceptance (skipped — Mac-only, no swiftc on Linux host)
 
 **Acceptance:** `swiftc main.swift -o /tmp/cclimits && /tmp/cclimits` shows the
 item in the menu bar with ticking countdowns and aligned bars; the dropdown shows

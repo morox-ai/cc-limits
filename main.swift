@@ -292,4 +292,99 @@ func renderStatusImage(state: AppState) -> NSImage {
     return image
 }
 
-// TODO: implemented by later tasks (app lifecycle, status item, timers, menu).
+private let fiveHourResetFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "h:mm a"
+    formatter.locale = Locale(identifier: "en_US")
+    return formatter
+}()
+
+private let sevenDayResetFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "EEE h:mm a"
+    formatter.locale = Locale(identifier: "en_US")
+    return formatter
+}()
+
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    private let state = AppState()
+    private var statusItem: NSStatusItem!
+    private var fetchTimer: Timer?
+    private var redrawTimer: Timer?
+
+    private let fiveHourResetMenuItem = NSMenuItem(title: "5h resets at —", action: nil, keyEquivalent: "")
+    private let sevenDayResetMenuItem = NSMenuItem(title: "Weekly resets —", action: nil, keyEquivalent: "")
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem.menu = buildMenu()
+        redraw()
+
+        fetchTimer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { [weak self] _ in
+            self?.refresh()
+        }
+        redrawTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
+            self?.redraw()
+        }
+        refresh()
+    }
+
+    private func buildMenu() -> NSMenu {
+        let menu = NSMenu()
+        fiveHourResetMenuItem.isEnabled = false
+        sevenDayResetMenuItem.isEnabled = false
+        menu.addItem(fiveHourResetMenuItem)
+        menu.addItem(sevenDayResetMenuItem)
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Refresh now", action: #selector(refreshNow), keyEquivalent: "r"))
+        menu.addItem(NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q"))
+        for item in menu.items where item.action != nil {
+            item.target = self
+        }
+        return menu
+    }
+
+    @objc private func refreshNow() {
+        refresh()
+    }
+
+    @objc private func quit() {
+        NSApplication.shared.terminate(nil)
+    }
+
+    private func refresh() {
+        fetchUsage { [weak self] result in
+            guard let self = self else { return }
+            if let result = result {
+                self.state.fiveHour = result.fiveHour
+                self.state.sevenDay = result.sevenDay
+                self.state.hasLoaded = true
+            }
+            self.redraw()
+        }
+    }
+
+    private func redraw() {
+        statusItem.button?.image = renderStatusImage(state: state)
+        updateMenuInfoRows()
+    }
+
+    private func updateMenuInfoRows() {
+        if let five = state.fiveHour {
+            fiveHourResetMenuItem.title = "5h resets at \(fiveHourResetFormatter.string(from: five.resetsAt))"
+        } else {
+            fiveHourResetMenuItem.title = "5h resets at —"
+        }
+        if let seven = state.sevenDay {
+            sevenDayResetMenuItem.title = "Weekly resets \(sevenDayResetFormatter.string(from: seven.resetsAt))"
+        } else {
+            sevenDayResetMenuItem.title = "Weekly resets —"
+        }
+    }
+}
+
+let application = NSApplication.shared
+application.setActivationPolicy(.accessory)
+let delegate = AppDelegate()
+application.delegate = delegate
+application.run()
