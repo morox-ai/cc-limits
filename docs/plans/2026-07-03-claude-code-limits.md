@@ -2,8 +2,8 @@
 
 ## Context
 
-Build a native macOS menu bar (top bar) app that surfaces Claude Code
-usage limits at a glance, in the format:
+Build a native macOS menu bar (top bar) app that surfaces Claude Code usage
+limits at a glance, in the format:
 
 ```
 4:10 [▁ bar ▁] 13% │ 2d 3h [▁ bar ▁] 3%
@@ -14,19 +14,12 @@ usage limits at a glance, in the format:
 - The bar is a **very minimalist graphical progress bar** (real pixels, not unicode blocks).
 - Monochrome by default (blends into the menu bar, adapts to light/dark); turns **amber >60%**, **red >80%** so a near-limit draws the eye.
 
-Reference implementation for the data fetch already exists in the user's dotfiles
-at `~/dotfiles/.tmux/scripts/claude-usage.sh` (polls the same endpoint for the
-tmux status bar). This app reimplements that fetch natively so it can draw crisp
-bars and live-tick the countdown.
+Reference implementation for the data fetch exists in the user's dotfiles at
+`~/dotfiles/.tmux/scripts/claude-usage.sh` (polls the same endpoint for the tmux
+status bar). This app reimplements that fetch natively so it can draw crisp bars
+and live-tick the countdown.
 
-## Approach (decided)
-
-Native Swift menu bar app compiled with `swiftc` into an app bundle — no Xcode
-project. `LSUIElement` agent app (no Dock icon), one `NSStatusItem`, launched at
-login via a LaunchAgent. Chosen over a SwiftBar/xbar plugin because it needs no
-third-party host app and is the only option giving true graphical progress bars.
-
-## Data source
+### Data source
 
 - Token: `security find-generic-password -s "Claude Code-credentials" -w`, then
   decode `.claudeAiOauth.accessToken` from the returned JSON (decode in Swift).
@@ -38,67 +31,146 @@ third-party host app and is the only option giving true graphical progress bars.
   microseconds + `+00:00` offset (e.g. `2026-07-03T11:09:59.839280+00:00`).
 - Confirmed live values at plan time: 5h ≈ 14%, 7d ≈ 3%.
 
-## Architecture
+### Approach
 
-Single `main.swift`. State = two `(utilization: Double, resetsAt: Date)` pairs,
-plus a "have we ever loaded" flag.
+Native Swift menu bar app compiled with `swiftc` into an app bundle — no Xcode
+project. `LSUIElement` agent app (no Dock icon), one `NSStatusItem`, launched at
+login via a LaunchAgent. No external dependencies — system Swift toolchain,
+`security`, `URLSession` only.
 
-Two timers:
-- **Fetch timer — every 300s:** keychain → `URLSession` request → decode → update
-  state. On any failure (no token, network error, `error` in JSON) keep the last
-  good state so the bar never blanks.
-- **Redraw timer — every 30s:** recompute countdown (`resetsAt - Date()`) and
-  repaint. Keeps `4:10` ticking without hammering the API.
+All files live in the project root `~/Code/claude-code-limits/`.
 
-Fetch runs off the main thread; UI updates dispatched back to main.
+---
 
-Countdown formatting:
-- 5h window: `h:mm` (e.g. `4:10`); if <1h, `0:mm`.
-- 7d window: `Nd Nh` when ≥1 day, else `Nh Nm`, else `Nm`.
-- Never-loaded / no token: dim `∞` fallback.
+### Task 1: Project scaffolding
 
-## Rendering
+Create the repository skeleton so later tasks have a stable structure.
 
-Draw the entire status item as one `NSImage` so text + bars share the pixel grid.
-Per window, left→right: countdown text · progress bar · `NN%`; a thin `│`
-separates the two groups.
+- [x] `README.md` — one-paragraph description of the app plus placeholders for the
+  Build and Install sections (filled in by later tasks).
+- [x] `.gitignore` — ignore the built bundle (`ClaudeCodeLimits.app/`) and macOS
+  cruft (`.DS_Store`).
+- [x] Empty `main.swift` with just a top-of-file `import AppKit` and a `// TODO`
+  marker so the file exists for later tasks to fill.
 
-- Bar: ~22×5px rounded-rect track + rounded fill (`NSBezierPath` roundedRect).
-  No border, no chrome.
-- Color: system menu-bar label color at rest; fill + percent switch to amber
-  (>60%) and red (>80%). Thresholds 60/80.
-- Set `image.isTemplate = true` when fully monochrome so macOS tints for
-  light/dark + highlight; when a warning color is active, draw non-template so
-  amber/red survives.
-- Font: system font ~11pt (`NSFont.menuBarFont` size).
+**Acceptance:** `README.md`, `.gitignore`, and `main.swift` exist at the project
+root; `git status` shows them as new files; `swiftc -parse main.swift` succeeds.
+- [x] `swiftc -parse main.swift` (skipped — Mac-only, no swiftc on Linux host)
 
-Dropdown menu (minimal):
-- `5h resets at <clock>` (disabled info row)
-- `Weekly resets <day clock>` (disabled info row)
-- separator
-- `Refresh now` → triggers immediate fetch
-- `Quit`
+---
 
-## Files (all in project root, `~/Code/claude-code-limits/`)
+### Task 2: Data model, keychain + API fetch
 
-- `main.swift` — the app (~250 lines).
-- `build.sh` — `swiftc main.swift -o …`, assemble `ClaudeCodeLimits.app/Contents/`
-  (`MacOS/` binary + generated `Info.plist` with `LSUIElement=true`,
-  `CFBundleName`, bundle id `ai.morox.cc-limits`).
-- `ai.morox.cc-limits.plist` — LaunchAgent: `RunAtLoad=true`,
-  `KeepAlive=true`, `ProgramArguments` → the built binary.
-- `README.md` — build + `launchctl load/unload` instructions.
-- `.gitignore` — ignore the built `ClaudeCodeLimits.app/` bundle (build artifact).
+Implement the data layer in `main.swift`.
 
-No external dependencies — system Swift toolchain, `security`, `URLSession` only.
+- [ ] Define a `WindowUsage` struct/tuple holding `utilization: Double` and
+  `resetsAt: Date`, and an app-state holder with optional `fiveHour` and
+  `sevenDay` values plus a `hasLoaded` flag.
+- [ ] `readToken() -> String?`: shell out to
+  `security find-generic-password -s "Claude Code-credentials" -w`, parse the
+  returned JSON, return `.claudeAiOauth.accessToken`. Return `nil` on any failure.
+- [ ] `fetchUsage(completion:)`: build a `URLSession` `GET` to
+  `https://api.anthropic.com/api/oauth/usage` with headers
+  `Authorization: Bearer <token>` and `anthropic-beta: oauth-2025-04-20`. Decode
+  `five_hour` and `seven_day` (`utilization`, `resets_at`). Parse `resets_at`
+  with an ISO-8601 formatter tolerant of fractional seconds. On any failure
+  (no token, network error, `error` key in JSON, decode failure) call completion
+  with `nil` so the caller keeps the last good state.
+- [ ] Run the fetch off the main thread; the completion is invoked on the main thread.
 
-## Verification
+**Acceptance:** a temporary `main()` that calls `fetchUsage` and prints the two
+utilizations compiles and, when run on the host, prints values matching the live
+API (≈14% / ≈3%). Remove the temporary print before finishing.
 
-1. `bash build.sh` — compiles cleanly and produces `ClaudeCodeLimits.app`.
-2. Launch the binary directly; confirm the menu bar shows `~14%` / `~3%` with
-   ticking countdowns and aligned bars.
-3. Temporarily hardcode a high utilization (e.g. 85%) to confirm amber/red +
-   the template→non-template toggle; revert.
-4. Open the dropdown: reset times correct, `Refresh now` re-fetches, `Quit` exits.
-5. `cp` plist to `~/Library/LaunchAgents/`, `launchctl load`; confirm it starts
-   and survives a re-login.
+---
+
+### Task 3: Countdown formatting
+
+Add pure formatting helpers to `main.swift` (no UI yet), so they are unit-checkable.
+
+- [ ] `formatFiveHour(_ remaining: TimeInterval) -> String`: `h:mm` (e.g. `4:10`);
+  when under one hour, `0:mm`; clamp negatives to `0:00`.
+- [ ] `formatSevenDay(_ remaining: TimeInterval) -> String`: `Nd Nh` when ≥1 day,
+  else `Nh Nm`, else `Nm`; clamp negatives to `0m`.
+- [ ] Both derive `remaining` from `resetsAt - Date()`.
+
+**Acceptance:** a temporary driver prints correct strings for a spread of inputs
+(e.g. 15010s → `4:10`; 183600s → `2d 3h`; 2700s → `0:45`; 800s → `13m`; negative
+→ zero form). Remove the driver before finishing.
+
+---
+
+### Task 4: Menu bar rendering
+
+Render the whole status item as a single `NSImage` so text and bars share the
+pixel grid.
+
+- [ ] Layout per window, left→right: countdown text · progress bar · `NN%`; a thin
+  `│` separates the 5h and 7d groups.
+- [ ] Bar: ~22×5px `NSBezierPath(roundedRect:)` track + rounded fill proportional to
+  utilization. No border, no chrome.
+- [ ] Color: `NSColor.labelColor` at rest; the fill and the percent text switch to
+  amber when utilization > 60 and red when > 80.
+- [ ] When everything is monochrome set `image.isTemplate = true` (so macOS tints for
+  light/dark and menu-bar highlight); when a warning color is active, draw
+  non-template so amber/red survives.
+- [ ] Font: system font at `NSFont.systemFontSize(for: .small)` / menu-bar size (~11pt).
+- [ ] No-data / no-token state renders a dim `∞`.
+
+**Acceptance:** a function `renderStatusImage(state) -> NSImage` returns a
+correctly sized image; a temporary harness writes one PNG at ~14%/3% and one at a
+forced 85% and they visibly differ (monochrome vs red). Remove the harness before
+finishing.
+
+---
+
+### Task 5: App lifecycle, status item, timers, menu
+
+Wire the pieces into a running agent app in `main.swift`.
+
+- [ ] `NSApplication` with `.accessory` activation policy; an `AppDelegate` owning one
+  `NSStatusItem` (variable length) whose `button.image` is set from
+  `renderStatusImage`.
+- [ ] **Fetch timer** every 300s (fire once immediately on launch) → `fetchUsage`,
+  update state on success, keep last good on failure, then redraw.
+- [ ] **Redraw timer** every 30s → recompute countdowns and redraw so the timer ticks.
+- [ ] Minimal dropdown `NSMenu`: two disabled info rows (`5h resets at <clock>`,
+  `Weekly resets <day clock>` using a local-time formatter), a separator,
+  `Refresh now` (triggers an immediate fetch), and `Quit`.
+
+**Acceptance:** `swiftc main.swift -o /tmp/cclimits && /tmp/cclimits` shows the
+item in the menu bar with ticking countdowns and aligned bars; the dropdown shows
+correct reset times; `Refresh now` re-fetches; `Quit` exits.
+
+---
+
+### Task 6: build.sh — assemble the .app bundle
+
+Create `build.sh` that produces a double-clickable/loadable app.
+
+- [ ] Compile: `swiftc main.swift -o ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits`.
+- [ ] Generate `ClaudeCodeLimits.app/Contents/Info.plist` with `LSUIElement=true`,
+  `CFBundleName=ClaudeCodeLimits`, `CFBundleExecutable=ClaudeCodeLimits`,
+  `CFBundleIdentifier=ai.morox.cc-limits`, and a bundle version.
+- [ ] Create the `Contents/MacOS` directory tree as needed; make the script
+  idempotent (safe to re-run).
+
+**Acceptance:** `bash build.sh` exits 0 and produces `ClaudeCodeLimits.app`;
+`open ClaudeCodeLimits.app` launches the menu bar item with no Dock icon.
+
+---
+
+### Task 7: LaunchAgent + README install docs
+
+Make it run at login and document usage.
+
+- [ ] `ai.morox.cc-limits.plist` — LaunchAgent with `RunAtLoad=true`,
+  `KeepAlive=true`, and `ProgramArguments` pointing at the built binary inside
+  the app bundle (absolute path under the user's home).
+- [ ] Fill in `README.md`: **Build** (`bash build.sh`) and **Install**
+  (`cp` the plist to `~/Library/LaunchAgents/`, `launchctl load` it; `unload` to
+  stop) sections, plus a note that it reads the Claude Code keychain credential.
+
+**Acceptance:** copying the plist to `~/Library/LaunchAgents/` and running
+`launchctl load` starts the app; `launchctl unload` stops it; README steps are
+accurate.
