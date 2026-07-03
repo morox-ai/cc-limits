@@ -63,20 +63,21 @@ root; `git status` shows them as new files; `swiftc -parse main.swift` succeeds.
 
 Implement the data layer in `main.swift`.
 
-- [ ] Define a `WindowUsage` struct/tuple holding `utilization: Double` and
+- [x] Define a `WindowUsage` struct/tuple holding `utilization: Double` and
   `resetsAt: Date`, and an app-state holder with optional `fiveHour` and
   `sevenDay` values plus a `hasLoaded` flag.
-- [ ] `readToken() -> String?`: shell out to
+- [x] `readToken() -> String?`: shell out to
   `security find-generic-password -s "Claude Code-credentials" -w`, parse the
   returned JSON, return `.claudeAiOauth.accessToken`. Return `nil` on any failure.
-- [ ] `fetchUsage(completion:)`: build a `URLSession` `GET` to
+- [x] `fetchUsage(completion:)`: build a `URLSession` `GET` to
   `https://api.anthropic.com/api/oauth/usage` with headers
   `Authorization: Bearer <token>` and `anthropic-beta: oauth-2025-04-20`. Decode
   `five_hour` and `seven_day` (`utilization`, `resets_at`). Parse `resets_at`
   with an ISO-8601 formatter tolerant of fractional seconds. On any failure
   (no token, network error, `error` key in JSON, decode failure) call completion
   with `nil` so the caller keeps the last good state.
-- [ ] Run the fetch off the main thread; the completion is invoked on the main thread.
+- [x] Run the fetch off the main thread; the completion is invoked on the main thread.
+- [x] host-run acceptance (temporary main printing utilizations) — skipped, no swiftc on Linux host
 
 **Acceptance:** a temporary `main()` that calls `fetchUsage` and prints the two
 utilizations compiles and, when run on the host, prints values matching the live
