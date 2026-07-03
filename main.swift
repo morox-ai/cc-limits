@@ -110,5 +110,39 @@ func fetchUsage(completion: @escaping ((fiveHour: WindowUsage, sevenDay: WindowU
     }
 }
 
-// TODO: implemented by later tasks (countdown formatting, menu bar rendering,
-// app lifecycle).
+func remaining(until date: Date) -> TimeInterval {
+    date.timeIntervalSinceNow
+}
+
+func formatFiveHour(_ remaining: TimeInterval) -> String {
+    let clamped = max(0, remaining)
+    let totalMinutes = Int(clamped) / 60
+    let hours = totalMinutes / 60
+    let minutes = totalMinutes % 60
+    return String(format: "%d:%02d", hours, minutes)
+}
+
+func formatSevenDay(_ remaining: TimeInterval) -> String {
+    let clamped = max(0, remaining)
+    let totalSeconds = Int(clamped)
+    let days = totalSeconds / 86_400
+    let hours = (totalSeconds % 86_400) / 3_600
+    let minutes = (totalSeconds % 3_600) / 60
+    if days >= 1 {
+        return "\(days)d \(hours)h"
+    }
+    if hours >= 1 {
+        return "\(hours)h \(minutes)m"
+    }
+    return "\(minutes)m"
+}
+
+func formatFiveHour(resetsAt: Date) -> String {
+    formatFiveHour(remaining(until: resetsAt))
+}
+
+func formatSevenDay(resetsAt: Date) -> String {
+    formatSevenDay(remaining(until: resetsAt))
+}
+
+// TODO: implemented by later tasks (menu bar rendering, app lifecycle).

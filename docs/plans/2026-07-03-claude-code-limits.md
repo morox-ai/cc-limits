@@ -89,11 +89,11 @@ API (≈14% / ≈3%). Remove the temporary print before finishing.
 
 Add pure formatting helpers to `main.swift` (no UI yet), so they are unit-checkable.
 
-- [ ] `formatFiveHour(_ remaining: TimeInterval) -> String`: `h:mm` (e.g. `4:10`);
+- [x] `formatFiveHour(_ remaining: TimeInterval) -> String`: `h:mm` (e.g. `4:10`);
   when under one hour, `0:mm`; clamp negatives to `0:00`.
-- [ ] `formatSevenDay(_ remaining: TimeInterval) -> String`: `Nd Nh` when ≥1 day,
+- [x] `formatSevenDay(_ remaining: TimeInterval) -> String`: `Nd Nh` when ≥1 day,
   else `Nh Nm`, else `Nm`; clamp negatives to `0m`.
-- [ ] Both derive `remaining` from `resetsAt - Date()`.
+- [x] Both derive `remaining` from `resetsAt - Date()`.
 
 **Acceptance:** a temporary driver prints correct strings for a spread of inputs
 (e.g. 15010s → `4:10`; 183600s → `2d 3h`; 2700s → `0:45`; 800s → `13m`; negative
