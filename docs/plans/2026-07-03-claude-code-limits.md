@@ -167,10 +167,10 @@ Create `build.sh` that produces a double-clickable/loadable app.
 
 Make it run at login and document usage.
 
-- [ ] `ai.morox.cc-limits.plist` — LaunchAgent with `RunAtLoad=true`,
+- [x] `ai.morox.cc-limits.plist` — LaunchAgent with `RunAtLoad=true`,
   `KeepAlive=true`, and `ProgramArguments` pointing at the built binary inside
   the app bundle (absolute path under the user's home).
-- [ ] Fill in `README.md`: **Build** (`bash build.sh`) and **Install**
+- [x] Fill in `README.md`: **Build** (`bash build.sh`) and **Install**
   (`cp` the plist to `~/Library/LaunchAgents/`, `launchctl load` it; `unload` to
   stop) sections, plus a note that it reads the Claude Code keychain credential.
 

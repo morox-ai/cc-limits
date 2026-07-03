@@ -9,8 +9,38 @@ polls the Anthropic usage endpoint.
 
 ## Build
 
-_TODO: filled in by a later task (`bash build.sh`)._
+Requires the system Swift toolchain (Xcode Command Line Tools) — no Xcode project
+and no external dependencies.
+
+```sh
+bash build.sh
+```
+
+This compiles `main.swift` and assembles `ClaudeCodeLimits.app` at the project
+root. The script is idempotent — re-run it to rebuild after changes. Double-click
+the bundle (or `open ClaudeCodeLimits.app`) to launch the menu bar item; it has no
+Dock icon.
 
 ## Install
 
-_TODO: filled in by a later task (LaunchAgent setup)._
+Install as a LaunchAgent so it starts at login and stays running:
+
+```sh
+cp ai.morox.cc-limits.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/ai.morox.cc-limits.plist
+```
+
+To stop it:
+
+```sh
+launchctl unload ~/Library/LaunchAgents/ai.morox.cc-limits.plist
+```
+
+The `ProgramArguments` path in the plist assumes the repository lives at
+`~/Code/claude-code-limits/`. If you cloned it elsewhere, edit that path to point
+at `ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits` inside your checkout
+before loading.
+
+The app reads the Claude Code OAuth credential from the macOS keychain (the
+`Claude Code-credentials` generic password) to query the Anthropic usage
+endpoint. On first launch macOS may prompt to allow keychain access.
