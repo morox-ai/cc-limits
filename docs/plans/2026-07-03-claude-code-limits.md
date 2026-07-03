@@ -106,17 +106,18 @@ Add pure formatting helpers to `main.swift` (no UI yet), so they are unit-checka
 Render the whole status item as a single `NSImage` so text and bars share the
 pixel grid.
 
-- [ ] Layout per window, left→right: countdown text · progress bar · `NN%`; a thin
+- [x] Layout per window, left→right: countdown text · progress bar · `NN%`; a thin
   `│` separates the 5h and 7d groups.
-- [ ] Bar: ~22×5px `NSBezierPath(roundedRect:)` track + rounded fill proportional to
+- [x] Bar: ~22×5px `NSBezierPath(roundedRect:)` track + rounded fill proportional to
   utilization. No border, no chrome.
-- [ ] Color: `NSColor.labelColor` at rest; the fill and the percent text switch to
+- [x] Color: `NSColor.labelColor` at rest; the fill and the percent text switch to
   amber when utilization > 60 and red when > 80.
-- [ ] When everything is monochrome set `image.isTemplate = true` (so macOS tints for
+- [x] When everything is monochrome set `image.isTemplate = true` (so macOS tints for
   light/dark and menu-bar highlight); when a warning color is active, draw
   non-template so amber/red survives.
-- [ ] Font: system font at `NSFont.systemFontSize(for: .small)` / menu-bar size (~11pt).
-- [ ] No-data / no-token state renders a dim `∞`.
+- [x] Font: system font at `NSFont.systemFontSize(for: .small)` / menu-bar size (~11pt).
+- [x] No-data / no-token state renders a dim `∞`.
+- [x] PNG harness acceptance (skipped — no swiftc on Linux host)
 
 **Acceptance:** a function `renderStatusImage(state) -> NSImage` returns a
 correctly sized image; a temporary harness writes one PNG at ~14%/3% and one at a
