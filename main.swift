@@ -260,26 +260,27 @@ private func renderPlaceholderImage() -> NSImage {
     return image
 }
 
+private let statusResetTimeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "h:mm"
+    formatter.locale = Locale(identifier: "en_US")
+    return formatter
+}()
+
 func renderStatusImage(state: AppState) -> NSImage {
-    guard state.hasLoaded, let five = state.fiveHour, let seven = state.sevenDay else {
+    guard state.hasLoaded, let five = state.fiveHour, state.sevenDay != nil else {
         return renderPlaceholderImage()
     }
 
     let baseColor = NSColor.labelColor
     let fiveWarning = warningColor(for: five.utilization)
-    let sevenWarning = warningColor(for: seven.utilization)
     let fiveTint = fiveWarning ?? baseColor
-    let sevenTint = sevenWarning ?? baseColor
-    let hasWarning = fiveWarning != nil || sevenWarning != nil
+    let hasWarning = fiveWarning != nil
 
     let segments: [RenderSegment] = [
-        .text(formatFiveHour(resetsAt: five.resetsAt), baseColor),
         .bar(five.utilization, fiveTint),
         .text(percentString(five.utilization), fiveTint),
-        .separator(baseColor),
-        .text(formatSevenDay(resetsAt: seven.resetsAt), baseColor),
-        .bar(seven.utilization, sevenTint),
-        .text(percentString(seven.utilization), sevenTint),
+        .text(statusResetTimeFormatter.string(from: five.resetsAt), baseColor),
     ]
 
     var totalWidth: CGFloat = 0
@@ -326,8 +327,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var fetchTimer: Timer?
     private var redrawTimer: Timer?
 
-    private let fiveHourResetMenuItem = NSMenuItem(title: "5h resets at —", action: nil, keyEquivalent: "")
-    private let sevenDayResetMenuItem = NSMenuItem(title: "Weekly resets —", action: nil, keyEquivalent: "")
+    private let fiveHourResetMenuItem = NSMenuItem(title: "5h limit: loading…", action: nil, keyEquivalent: "")
+    private let sevenDayResetMenuItem = NSMenuItem(title: "Weekly limit: loading…", action: nil, keyEquivalent: "")
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -385,14 +386,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func updateMenuInfoRows() {
         if let five = state.fiveHour {
-            fiveHourResetMenuItem.title = "5h resets at \(fiveHourResetFormatter.string(from: five.resetsAt))"
+            fiveHourResetMenuItem.title = "5h limit: \(percentString(five.utilization)) used • resets in \(formatFiveHour(resetsAt: five.resetsAt)) • at \(fiveHourResetFormatter.string(from: five.resetsAt))"
         } else {
-            fiveHourResetMenuItem.title = "5h resets at —"
+            fiveHourResetMenuItem.title = "5h limit: loading…"
         }
         if let seven = state.sevenDay {
-            sevenDayResetMenuItem.title = "Weekly resets \(sevenDayResetFormatter.string(from: seven.resetsAt))"
+            sevenDayResetMenuItem.title = "Weekly limit: \(percentString(seven.utilization)) used • resets in \(formatSevenDay(resetsAt: seven.resetsAt)) • at \(sevenDayResetFormatter.string(from: seven.resetsAt))"
         } else {
-            sevenDayResetMenuItem.title = "Weekly resets —"
+            sevenDayResetMenuItem.title = "Weekly limit: loading…"
         }
     }
 }
