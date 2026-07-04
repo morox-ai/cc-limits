@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+
+APP_BUNDLE="$SCRIPT_DIR/ClaudeCodeLimits.app"
+APP_EXECUTABLE="$APP_BUNDLE/Contents/MacOS/ClaudeCodeLimits"
+
+usage() {
+  cat <<USAGE
+Usage: cc-limits [--foreground] [--rebuild] [--help]
+
+Launch ClaudeCodeLimits from the terminal.
+
+Options:
+  --foreground  Run the app executable in this terminal instead of opening the .app bundle.
+  --rebuild     Rebuild ClaudeCodeLimits.app before launching.
+  --help        Show this help text.
+USAGE
+}
+
+RUN_FOREGROUND=0
+REBUILD=0
+
+for arg in "$@"; do
+  case "$arg" in
+    --foreground)
+      RUN_FOREGROUND=1
+      ;;
+    --rebuild)
+      REBUILD=1
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $arg" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [[ "$REBUILD" -eq 1 ]]; then
+  bash "$SCRIPT_DIR/build.sh"
+fi
+
+if [[ ! -x "$APP_EXECUTABLE" ]]; then
+  echo "ClaudeCodeLimits.app is not built yet." >&2
+  echo "Build it with: bash \"$SCRIPT_DIR/build.sh\"" >&2
+  exit 1
+fi
+
+if [[ "$RUN_FOREGROUND" -eq 1 ]]; then
+  exec "$APP_EXECUTABLE"
+fi
+
+open "$APP_BUNDLE"

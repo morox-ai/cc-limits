@@ -21,6 +21,33 @@ root. The script is idempotent — re-run it to rebuild after changes. Double-cl
 the bundle (or `open ClaudeCodeLimits.app`) to launch the menu bar item; it has no
 Dock icon.
 
+## Terminal launcher
+
+The repository includes a `cc-limits` launcher script. From the repository root:
+
+```sh
+./cc-limits
+```
+
+To make `cc-limits` available from any terminal directory, symlink it into a
+folder on your `PATH`:
+
+```sh
+ln -sf "$PWD/cc-limits" /opt/homebrew/bin/cc-limits
+```
+
+If you do not use Homebrew on Apple Silicon, choose another writable `PATH`
+directory such as `~/.local/bin` or `/usr/local/bin`.
+
+Then launch the app with:
+
+```sh
+cc-limits
+```
+
+Use `cc-limits --rebuild` to rebuild before launching, or
+`cc-limits --foreground` to run the app executable in the current terminal.
+
 ## Install
 
 Install as a LaunchAgent so it starts at login and stays running:
