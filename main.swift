@@ -9,13 +9,30 @@ struct WindowUsage {
     }
 }
 
-final class AppState {
+typealias UsageSnapshot = (fiveHour: WindowUsage?, sevenDay: WindowUsage?)
+typealias UsageFetcher = (@escaping (UsageSnapshot?) -> Void) -> Void
+
+final class ProviderState {
+    let name: String
+    let fetch: UsageFetcher
     var fiveHour: WindowUsage?
     var sevenDay: WindowUsage?
     var hasLoaded = false
+
+    init(name: String, fetch: @escaping UsageFetcher) {
+        self.name = name
+        self.fetch = fetch
+    }
 }
 
-func readToken() -> String? {
+final class AppState {
+    let providers = [
+        ProviderState(name: "Claude Code", fetch: fetchClaudeUsage),
+        ProviderState(name: "Codex", fetch: fetchCodexUsage),
+    ]
+}
+
+func readClaudeToken() -> String? {
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/security")
     process.arguments = ["find-generic-password", "-s", "Claude Code-credentials", "-w"]
@@ -94,15 +111,13 @@ private func parseWindow(_ dict: [String: Any]?) -> WindowUsage? {
     return WindowUsage(utilization: utilization, resetsAt: resetsAt)
 }
 
-typealias UsageSnapshot = (fiveHour: WindowUsage?, sevenDay: WindowUsage?)
-
-func fetchUsage(completion: @escaping (UsageSnapshot?) -> Void) {
+func fetchClaudeUsage(completion: @escaping (UsageSnapshot?) -> Void) {
     func finish(_ result: UsageSnapshot?) {
         DispatchQueue.main.async { completion(result) }
     }
 
     DispatchQueue.global(qos: .utility).async {
-        guard let token = readToken() else {
+        guard let token = readClaudeToken() else {
             finish(nil)
             return
         }
@@ -131,6 +146,81 @@ func fetchUsage(completion: @escaping (UsageSnapshot?) -> Void) {
 
             let fiveHour = parseWindow(json["five_hour"] as? [String: Any])
             let sevenDay = parseWindow(json["seven_day"] as? [String: Any])
+            finish((fiveHour: fiveHour, sevenDay: sevenDay))
+        }
+        task.resume()
+    }
+}
+
+func readCodexCredentials() -> (accessToken: String, accountID: String)? {
+    let url = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".codex/auth.json")
+    guard
+        let data = try? Data(contentsOf: url),
+        let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let tokens = json["tokens"] as? [String: Any],
+        let accessToken = tokens["access_token"] as? String,
+        !accessToken.isEmpty,
+        let accountID = tokens["account_id"] as? String,
+        !accountID.isEmpty
+    else {
+        return nil
+    }
+    return (accessToken: accessToken, accountID: accountID)
+}
+
+private func parseCodexWindow(_ dict: [String: Any]?) -> (seconds: Double, usage: WindowUsage)? {
+    guard
+        let dict = dict,
+        let utilization = parseDouble(dict["used_percent"]),
+        let seconds = parseDouble(dict["limit_window_seconds"]),
+        let resetAt = parseDouble(dict["reset_at"])
+    else {
+        return nil
+    }
+    let usage = WindowUsage(utilization: utilization, resetsAt: Date(timeIntervalSince1970: resetAt))
+    return (seconds: seconds, usage: usage)
+}
+
+func fetchCodexUsage(completion: @escaping (UsageSnapshot?) -> Void) {
+    func finish(_ result: UsageSnapshot?) {
+        DispatchQueue.main.async { completion(result) }
+    }
+
+    DispatchQueue.global(qos: .utility).async {
+        guard let credentials = readCodexCredentials() else {
+            finish(nil)
+            return
+        }
+
+        guard let url = URL(string: "https://chatgpt.com/backend-api/wham/usage") else {
+            finish(nil)
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.timeoutInterval = 10
+        request.setValue("Bearer \(credentials.accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue(credentials.accountID, forHTTPHeaderField: "ChatGPT-Account-Id")
+        request.setValue("codex-cli", forHTTPHeaderField: "User-Agent")
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard
+                error == nil,
+                (response as? HTTPURLResponse)?.statusCode == 200,
+                let data = data,
+                let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                let rateLimit = json["rate_limit"] as? [String: Any]
+            else {
+                finish(nil)
+                return
+            }
+
+            let windows = ["primary_window", "secondary_window"].compactMap {
+                parseCodexWindow(rateLimit[$0] as? [String: Any])
+            }
+            let fiveHour = windows.first { $0.seconds < 86_400 }?.usage
+            let sevenDay = windows.first { $0.seconds >= 86_400 }?.usage
             finish((fiveHour: fiveHour, sevenDay: sevenDay))
         }
         task.resume()
@@ -257,22 +347,6 @@ private func drawSegment(_ segment: RenderSegment, x: CGFloat) {
     }
 }
 
-private func renderPlaceholderImage() -> NSImage {
-    let color = NSColor.labelColor.withAlphaComponent(0.4)
-    let attrs = textAttributes(color)
-    let size = ("∞" as NSString).size(withAttributes: attrs)
-    let width = ceil(size.width) + horizontalPadding * 2
-    let image = NSImage(size: NSSize(width: width, height: imageHeight))
-    image.lockFocus()
-    ("∞" as NSString).draw(
-        at: NSPoint(x: (width - size.width) / 2, y: (imageHeight - size.height) / 2),
-        withAttributes: attrs
-    )
-    image.unlockFocus()
-    image.isTemplate = true
-    return image
-}
-
 private let statusResetTimeFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "h:mm"
@@ -285,26 +359,36 @@ private func activeWindow(_ window: WindowUsage?, at date: Date = Date()) -> Win
     return window
 }
 
-func renderStatusImage(state: AppState) -> NSImage {
-    guard state.hasLoaded else {
-        return renderPlaceholderImage()
+private func statusSegments(for provider: ProviderState, at now: Date) -> [RenderSegment] {
+    let baseColor = NSColor.labelColor
+    guard provider.hasLoaded else {
+        return [.text("∞", baseColor.withAlphaComponent(0.4))]
     }
 
-    let now = Date()
-    let baseColor = NSColor.labelColor
-    let five = activeWindow(state.fiveHour, at: now)
+    let five = activeWindow(provider.fiveHour, at: now)
     let utilization = five?.utilization ?? 0
-    let fiveWarning = warningColor(for: utilization)
-    let fiveTint = fiveWarning ?? baseColor
-    let hasWarning = fiveWarning != nil
+    let tint = warningColor(for: utilization) ?? baseColor
 
     var segments: [RenderSegment] = [
-        .bar(utilization, fiveTint),
-        .text(percentString(utilization), fiveTint),
+        .bar(utilization, tint),
+        .text(percentString(utilization), tint),
     ]
     if let five {
         segments.append(.text(statusResetTimeFormatter.string(from: five.resetsAt), baseColor))
     }
+    return segments
+}
+
+func renderStatusImage(state: AppState) -> NSImage {
+    let now = Date()
+    let hasWarning = state.providers.contains {
+        warningColor(for: activeWindow($0.fiveHour, at: now)?.utilization ?? 0) != nil
+    }
+    let segments = Array(
+        state.providers
+            .map { statusSegments(for: $0, at: now) }
+            .joined(separator: [RenderSegment.separator(NSColor.labelColor)])
+    )
 
     var totalWidth: CGFloat = 0
     for (index, segment) in segments.enumerated() {
@@ -344,14 +428,54 @@ private let sevenDayResetFormatter: DateFormatter = {
     return formatter
 }()
 
+private func usageRowTitle(
+    _ label: String,
+    window: WindowUsage?,
+    hasLoaded: Bool,
+    resetsIn: (Date) -> String,
+    resetFormatter: DateFormatter
+) -> String {
+    if let window {
+        return "\(label): \(percentString(window.utilization)) used • resets in \(resetsIn(window.resetsAt)) • at \(resetFormatter.string(from: window.resetsAt))"
+    }
+    return hasLoaded ? "\(label): 0% used" : "\(label): loading…"
+}
+
+private struct ProviderMenuRows {
+    let provider: ProviderState
+    let header: NSMenuItem
+    let fiveHour = NSMenuItem(title: "5h limit: loading…", action: nil, keyEquivalent: "")
+    let sevenDay = NSMenuItem(title: "Weekly limit: loading…", action: nil, keyEquivalent: "")
+
+    init(provider: ProviderState) {
+        self.provider = provider
+        header = NSMenuItem(title: provider.name, action: nil, keyEquivalent: "")
+    }
+
+    func update(at now: Date) {
+        fiveHour.title = usageRowTitle(
+            "5h limit",
+            window: activeWindow(provider.fiveHour, at: now),
+            hasLoaded: provider.hasLoaded,
+            resetsIn: formatFiveHour(resetsAt:),
+            resetFormatter: fiveHourResetFormatter
+        )
+        sevenDay.title = usageRowTitle(
+            "Weekly limit",
+            window: activeWindow(provider.sevenDay, at: now),
+            hasLoaded: provider.hasLoaded,
+            resetsIn: formatSevenDay(resetsAt:),
+            resetFormatter: sevenDayResetFormatter
+        )
+    }
+}
+
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let state = AppState()
     private var statusItem: NSStatusItem!
     private var fetchTimer: Timer?
     private var redrawTimer: Timer?
-
-    private let fiveHourResetMenuItem = NSMenuItem(title: "5h limit: loading…", action: nil, keyEquivalent: "")
-    private let sevenDayResetMenuItem = NSMenuItem(title: "Weekly limit: loading…", action: nil, keyEquivalent: "")
+    private lazy var menuRows = state.providers.map { ProviderMenuRows(provider: $0) }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -369,11 +493,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func buildMenu() -> NSMenu {
         let menu = NSMenu()
-        fiveHourResetMenuItem.isEnabled = false
-        sevenDayResetMenuItem.isEnabled = false
-        menu.addItem(fiveHourResetMenuItem)
-        menu.addItem(sevenDayResetMenuItem)
-        menu.addItem(NSMenuItem.separator())
+        for rows in menuRows {
+            for item in [rows.header, rows.fiveHour, rows.sevenDay] {
+                item.isEnabled = false
+                menu.addItem(item)
+            }
+            menu.addItem(NSMenuItem.separator())
+        }
         menu.addItem(NSMenuItem(title: "Refresh now", action: #selector(refreshNow), keyEquivalent: "r"))
         menu.addItem(NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q"))
         for item in menu.items where item.action != nil {
@@ -391,37 +517,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func refresh() {
-        fetchUsage { [weak self] result in
-            guard let self = self else { return }
-            if let result = result {
-                self.state.fiveHour = result.fiveHour
-                self.state.sevenDay = result.sevenDay
-                self.state.hasLoaded = true
+        for provider in state.providers {
+            provider.fetch { [weak self] result in
+                guard let self = self else { return }
+                if let result = result {
+                    provider.fiveHour = result.fiveHour
+                    provider.sevenDay = result.sevenDay
+                    provider.hasLoaded = true
+                }
+                self.redraw()
             }
-            self.redraw()
         }
     }
 
     private func redraw() {
         statusItem.button?.image = renderStatusImage(state: state)
-        updateMenuInfoRows()
-    }
-
-    private func updateMenuInfoRows() {
         let now = Date()
-        if let five = activeWindow(state.fiveHour, at: now) {
-            fiveHourResetMenuItem.title = "5h limit: \(percentString(five.utilization)) used • resets in \(formatFiveHour(resetsAt: five.resetsAt)) • at \(fiveHourResetFormatter.string(from: five.resetsAt))"
-        } else if state.hasLoaded {
-            fiveHourResetMenuItem.title = "5h limit: 0% used"
-        } else {
-            fiveHourResetMenuItem.title = "5h limit: loading…"
-        }
-        if let seven = activeWindow(state.sevenDay, at: now) {
-            sevenDayResetMenuItem.title = "Weekly limit: \(percentString(seven.utilization)) used • resets in \(formatSevenDay(resetsAt: seven.resetsAt)) • at \(sevenDayResetFormatter.string(from: seven.resetsAt))"
-        } else if state.hasLoaded {
-            sevenDayResetMenuItem.title = "Weekly limit: 0% used"
-        } else {
-            sevenDayResetMenuItem.title = "Weekly limit: loading…"
+        for rows in menuRows {
+            rows.update(at: now)
         }
     }
 }

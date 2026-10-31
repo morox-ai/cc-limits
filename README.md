@@ -1,11 +1,13 @@
 # ClaudeCodeLimits
 
-A native macOS menu bar app that surfaces Claude Code usage limits at a glance —
-the 5-hour session window and the 7-day weekly window, each shown as a countdown
-until reset, a minimalist graphical progress bar, and a percentage. It stays
-monochrome to blend into the menu bar and turns amber/red as you approach a
-limit. It reads the Claude Code OAuth credential from the macOS keychain and
-polls the Anthropic usage endpoint.
+A native macOS menu bar app that surfaces Claude Code and Codex usage limits at a
+glance. The menu bar shows two identical bars, Claude Code on the left and Codex
+on the right, each with a minimalist progress bar, a percentage, and the reset
+time of the 5-hour window. The menu adds the 7-day weekly window for both. Bars
+stay monochrome to blend into the menu bar and turn amber/red as you approach a
+limit. It reads the Claude Code OAuth credential from the macOS keychain and the
+Codex credential from `~/.codex/auth.json`, then polls each service's usage
+endpoint.
 
 ## Build
 
@@ -77,3 +79,8 @@ can appear in a non-interactive context. If the menu bar item stays on the dim
 `∞` placeholder, launch the app once manually (`open ClaudeCodeLimits.app`) and
 choose "Always Allow" on the keychain prompt so it can read the credential
 unattended thereafter.
+
+Codex limits require signing in with `codex login` using a ChatGPT account, with
+credentials stored in `~/.codex/auth.json`. The app never refreshes the Codex
+token itself, so it picks up the token Codex last saved. If you are signed out or
+use an API key, the Codex side stays on the `∞` placeholder.

@@ -12,8 +12,7 @@ cd "$SCRIPT_DIR"
 
 mkdir -p "$MACOS_DIR"
 
-export MACOSX_DEPLOYMENT_TARGET=12.0
-swiftc main.swift -o "${MACOS_DIR}/${APP_NAME}"
+swiftc -target "$(uname -m)-apple-macosx12.0" main.swift -o "${MACOS_DIR}/${APP_NAME}"
 
 cat > "$INFO_PLIST" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

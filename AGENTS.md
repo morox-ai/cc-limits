@@ -4,7 +4,7 @@ Project guidance for coding agents working in this repository.
 
 ## Project overview
 
-ClaudeCodeLimits is a native macOS menu bar app written in a single Swift source file (`main.swift`). It shows Claude Code usage limits by reading the Claude Code OAuth credential from the macOS keychain and polling Anthropic's usage endpoint.
+ClaudeCodeLimits is a native macOS menu bar app written in a single Swift source file (`main.swift`). It shows Claude Code and Codex usage limits by reading the Claude Code OAuth credential from the macOS keychain and the Codex credential from `~/.codex/auth.json`, then polling each service's usage endpoint.
 
 There is no Xcode project and no external dependency manager. The app is built directly with the system Swift toolchain.
 
@@ -50,7 +50,7 @@ open ClaudeCodeLimits.app
 - Prefer simple AppKit/Foundation APIs that compile with the system Swift toolchain.
 - `ClaudeCodeLimits.app/` is generated and ignored by git; change `main.swift` or `build.sh` instead.
 - Preserve the app as an `LSUIElement` menu bar utility with no Dock icon unless the user asks for a different behavior.
-- The app depends on the macOS keychain item named `Claude Code-credentials`; avoid logging tokens or credential payloads.
+- The app depends on the macOS keychain item named `Claude Code-credentials` and on `~/.codex/auth.json`; avoid logging tokens or credential payloads.
 - Network calls should remain asynchronous and UI updates should happen on the main queue.
 
 ## Testing / verification
