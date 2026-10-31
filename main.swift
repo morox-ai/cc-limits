@@ -3,6 +3,10 @@ import AppKit
 struct WindowUsage {
     var utilization: Double
     var resetsAt: Date
+
+    func isActive(at date: Date = Date()) -> Bool {
+        resetsAt > date
+    }
 }
 
 final class AppState {
@@ -72,10 +76,16 @@ private func parseResetsAt(_ string: String) -> Date? {
     return fallback.date(from: noFraction)
 }
 
+private func parseDouble(_ value: Any?) -> Double? {
+    if let double = value as? Double { return double }
+    if let number = value as? NSNumber { return number.doubleValue }
+    return nil
+}
+
 private func parseWindow(_ dict: [String: Any]?) -> WindowUsage? {
     guard
         let dict = dict,
-        let utilization = dict["utilization"] as? Double,
+        let utilization = parseDouble(dict["utilization"]),
         let resetsAtString = dict["resets_at"] as? String,
         let resetsAt = parseResetsAt(resetsAtString)
     else {
@@ -84,8 +94,10 @@ private func parseWindow(_ dict: [String: Any]?) -> WindowUsage? {
     return WindowUsage(utilization: utilization, resetsAt: resetsAt)
 }
 
-func fetchUsage(completion: @escaping ((fiveHour: WindowUsage, sevenDay: WindowUsage)?) -> Void) {
-    func finish(_ result: (fiveHour: WindowUsage, sevenDay: WindowUsage)?) {
+typealias UsageSnapshot = (fiveHour: WindowUsage?, sevenDay: WindowUsage?)
+
+func fetchUsage(completion: @escaping (UsageSnapshot?) -> Void) {
+    func finish(_ result: UsageSnapshot?) {
         DispatchQueue.main.async { completion(result) }
     }
 
@@ -111,13 +123,14 @@ func fetchUsage(completion: @escaping ((fiveHour: WindowUsage, sevenDay: WindowU
                 error == nil,
                 let data = data,
                 let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                json["error"] == nil,
-                let fiveHour = parseWindow(json["five_hour"] as? [String: Any]),
-                let sevenDay = parseWindow(json["seven_day"] as? [String: Any])
+                json["error"] == nil
             else {
                 finish(nil)
                 return
             }
+
+            let fiveHour = parseWindow(json["five_hour"] as? [String: Any])
+            let sevenDay = parseWindow(json["seven_day"] as? [String: Any])
             finish((fiveHour: fiveHour, sevenDay: sevenDay))
         }
         task.resume()
@@ -267,21 +280,31 @@ private let statusResetTimeFormatter: DateFormatter = {
     return formatter
 }()
 
+private func activeWindow(_ window: WindowUsage?, at date: Date = Date()) -> WindowUsage? {
+    guard let window = window, window.isActive(at: date) else { return nil }
+    return window
+}
+
 func renderStatusImage(state: AppState) -> NSImage {
-    guard state.hasLoaded, let five = state.fiveHour, state.sevenDay != nil else {
+    guard state.hasLoaded else {
         return renderPlaceholderImage()
     }
 
+    let now = Date()
     let baseColor = NSColor.labelColor
-    let fiveWarning = warningColor(for: five.utilization)
+    let five = activeWindow(state.fiveHour, at: now)
+    let utilization = five?.utilization ?? 0
+    let fiveWarning = warningColor(for: utilization)
     let fiveTint = fiveWarning ?? baseColor
     let hasWarning = fiveWarning != nil
 
-    let segments: [RenderSegment] = [
-        .bar(five.utilization, fiveTint),
-        .text(percentString(five.utilization), fiveTint),
-        .text(statusResetTimeFormatter.string(from: five.resetsAt), baseColor),
+    var segments: [RenderSegment] = [
+        .bar(utilization, fiveTint),
+        .text(percentString(utilization), fiveTint),
     ]
+    if let five {
+        segments.append(.text(statusResetTimeFormatter.string(from: five.resetsAt), baseColor))
+    }
 
     var totalWidth: CGFloat = 0
     for (index, segment) in segments.enumerated() {
@@ -385,13 +408,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func updateMenuInfoRows() {
-        if let five = state.fiveHour {
+        let now = Date()
+        if let five = activeWindow(state.fiveHour, at: now) {
             fiveHourResetMenuItem.title = "5h limit: \(percentString(five.utilization)) used • resets in \(formatFiveHour(resetsAt: five.resetsAt)) • at \(fiveHourResetFormatter.string(from: five.resetsAt))"
+        } else if state.hasLoaded {
+            fiveHourResetMenuItem.title = "5h limit: 0% used"
         } else {
             fiveHourResetMenuItem.title = "5h limit: loading…"
         }
-        if let seven = state.sevenDay {
+        if let seven = activeWindow(state.sevenDay, at: now) {
             sevenDayResetMenuItem.title = "Weekly limit: \(percentString(seven.utilization)) used • resets in \(formatSevenDay(resetsAt: seven.resetsAt)) • at \(sevenDayResetFormatter.string(from: seven.resetsAt))"
+        } else if state.hasLoaded {
+            sevenDayResetMenuItem.title = "Weekly limit: 0% used"
         } else {
             sevenDayResetMenuItem.title = "Weekly limit: loading…"
         }

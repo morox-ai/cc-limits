@@ -6,7 +6,7 @@
 	<string>ai.morox.cc-limits</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Users/you/Code/claude-code-limits/ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits</string>
+		<string>/Users/you/Code/cc-limits/ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
