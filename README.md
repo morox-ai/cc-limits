@@ -1,83 +1,83 @@
-# ClaudeCodeLimits
+# cc-limits
 
-A native macOS menu bar app that surfaces Claude Code and Codex usage limits at a
-glance. The menu bar shows two identical bars, Claude Code on the left and Codex
-on the right, each with a minimalist progress bar, a percentage, and the reset
-time of the 5-hour window. The menu adds the 7-day weekly window for both. Bars
-stay monochrome to blend into the menu bar and turn amber/red as you approach a
-limit. It reads the Claude Code OAuth credential from the macOS keychain and the
-Codex credential from `~/.codex/auth.json`, then polls each service's usage
-endpoint.
+Claude Code and Codex usage limits, always in your Mac's menu bar. Because the agent stopping mid-refactor is a bad way to check.
 
-## Build
+[cc-limits.morox.ai](https://cc-limits.morox.ai)
 
-Requires macOS 12 (Monterey) or newer and the system Swift toolchain (Xcode
-Command Line Tools) — no Xcode project and no external dependencies.
-
-```sh
-bash build.sh
-```
-
-This compiles `main.swift` and assembles `ClaudeCodeLimits.app` at the project
-root. The script is idempotent — re-run it to rebuild after changes. Double-click
-the bundle (or `open ClaudeCodeLimits.app`) to launch the menu bar item; it has no
-Dock icon.
-
-## Terminal launcher
-
-The repository includes a `cc-limits` launcher script. From the repository root:
-
-```sh
-./cc-limits
-```
-
-To make `cc-limits` available from any terminal directory, symlink it into a
-folder on your `PATH`:
-
-```sh
-ln -sf "$PWD/cc-limits" /opt/homebrew/bin/cc-limits
-```
-
-If you do not use Homebrew on Apple Silicon, choose another writable `PATH`
-directory such as `~/.local/bin` or `/usr/local/bin`.
-
-Then launch the app with:
-
-```sh
-cc-limits
-```
-
-Use `cc-limits --rebuild` to rebuild before launching, or
-`cc-limits --foreground` to run the app executable in the current terminal.
+![The cc-limits menu open over a terminal, with demo numbers](site/og.png)
 
 ## Install
 
-Install as a LaunchAgent so it starts at login and stays running:
+```sh
+brew install morox-ai/tap/cc-limits
+brew services start cc-limits
+```
+
+The formula compiles the app on your Mac, so it needs macOS 12 or newer and up-to-date Xcode Command Line Tools.
+
+macOS may ask for keychain access on first launch. Choose "Always Allow" so the app can keep reading the credential unattended.
+
+## What you see
+
+The menu bar shows Claude Code on the left and Codex on the right. Each side has a progress bar, the percentage used and the reset time of the 5-hour window.
+
+Bars stay monochrome until they matter: amber above 60%, red above 80%.
+
+The menu adds the 7-day window for both, plus Refresh now (⌘R) and Quit (⌘Q).
+
+A dim `∞` means that side has not loaded yet. Usually you are signed out, Codex is using an API key instead of a ChatGPT login, or keychain access has not been granted.
+
+## What it touches
+
+There is no account, API key or settings screen. The app reuses the credentials already on your machine.
+
+| Service | Credential | Usage endpoint |
+| --- | --- | --- |
+| Claude Code | `Claude Code-credentials` in the macOS keychain | `api.anthropic.com` |
+| Codex | `~/.codex/auth.json`, from `codex login` with a ChatGPT account | `chatgpt.com` |
+
+It polls every 5 minutes and talks to nothing else. There are no analytics and no server of its own. It never refreshes the Codex token, so it uses whatever Codex last saved.
+
+The whole app is [one Swift file](main.swift) with no dependencies. It touches your credentials, so read it first.
+
+## Good to know
+
+These usage endpoints are not publicly documented, so an update on their side can break the app.
+
+This is an independent project by [Morox](https://morox.ai), not affiliated with Anthropic or OpenAI. Claude Code and Codex belong to their owners.
+
+## Uninstall
+
+```sh
+brew services stop cc-limits
+brew uninstall cc-limits
+brew untap morox-ai/tap
+```
+
+## Build from source
+
+```sh
+git clone https://github.com/morox-ai/cc-limits.git
+cd cc-limits
+bash build.sh
+open ClaudeCodeLimits.app
+```
+
+`build.sh` compiles `main.swift` with the system Swift toolchain and assembles `ClaudeCodeLimits.app` in the repository root. There is no Xcode project.
+
+The `cc-limits` script launches that build. Use `--rebuild` to rebuild first or `--foreground` to run the app in the current terminal.
+
+To start your own build at login, run this from the repository root:
 
 ```sh
 sed "s|/Users/you/Code/cc-limits|$PWD|" ai.morox.cc-limits.plist > ~/Library/LaunchAgents/ai.morox.cc-limits.plist
 launchctl load ~/Library/LaunchAgents/ai.morox.cc-limits.plist
 ```
 
-Run this from the repository root. It points the agent at the app in your checkout.
+To stop it, run `launchctl unload ~/Library/LaunchAgents/ai.morox.cc-limits.plist`.
 
-To stop it:
+If the item stays on `∞` when started this way, the keychain prompt may have had nowhere to appear. Run `open ClaudeCodeLimits.app` once and choose "Always Allow".
 
-```sh
-launchctl unload ~/Library/LaunchAgents/ai.morox.cc-limits.plist
-```
+## License
 
-The app reads the Claude Code OAuth credential from the macOS keychain (the
-`Claude Code-credentials` generic password) to query the Anthropic usage
-endpoint. On first launch macOS may prompt to allow keychain access.
-
-Because the LaunchAgent starts the app via `launchd`, the first keychain prompt
-can appear in a non-interactive context. If the menu bar item stays on the dim
-`∞` placeholder, launch the app once manually (`open ClaudeCodeLimits.app`) and
-choose "Always Allow" on the keychain prompt so it can read the credential
-unattended thereafter.
-
-Codex limits require signing in with `codex login` using a ChatGPT account, with
-credentials stored in `~/.codex/auth.json`. The app never refreshes the Codex
-token itself, so it picks up the token Codex last saved. If you are signed out or
-use an API key, the Codex side stays on the `∞` placeholder.
+[MIT](LICENSE)
