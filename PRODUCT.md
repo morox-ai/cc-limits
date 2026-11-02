@@ -47,7 +47,7 @@ Two providers, one menu bar item, zero setup. It reuses the credentials already 
 ### Open decisions
 
 - Install path: chosen direction is a formula in the company's Homebrew tap (`brew install morox-ai/tap/cc-limits`) that builds from source, which needs no Developer ID signing or notarization. Tap and formula do not exist yet.
-- `morox-ai/cc-limits` is private and has no license. Both must change before the install command and any GitHub link work.
+- `morox-ai/homebrew-tap` must exist before the install command on the site works. The repository `morox-ai/cc-limits` is public under MIT.
 
 ## Brand Commitments
 

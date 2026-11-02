@@ -55,20 +55,17 @@ Use `cc-limits --rebuild` to rebuild before launching, or
 Install as a LaunchAgent so it starts at login and stays running:
 
 ```sh
-cp ai.morox.cc-limits.plist ~/Library/LaunchAgents/
+sed "s|/Users/you/Code/cc-limits|$PWD|" ai.morox.cc-limits.plist > ~/Library/LaunchAgents/ai.morox.cc-limits.plist
 launchctl load ~/Library/LaunchAgents/ai.morox.cc-limits.plist
 ```
+
+Run this from the repository root. It points the agent at the app in your checkout.
 
 To stop it:
 
 ```sh
 launchctl unload ~/Library/LaunchAgents/ai.morox.cc-limits.plist
 ```
-
-The `ProgramArguments` path in the plist assumes the repository lives at
-`~/Code/cc-limits/`. If you cloned it elsewhere, edit that path to point
-at `ClaudeCodeLimits.app/Contents/MacOS/ClaudeCodeLimits` inside your checkout
-before loading.
 
 The app reads the Claude Code OAuth credential from the macOS keychain (the
 `Claude Code-credentials` generic password) to query the Anthropic usage
