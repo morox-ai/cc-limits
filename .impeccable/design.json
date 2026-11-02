@@ -1,0 +1,562 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-01T22:06:56Z",
+  "title": "Design System: cc-limits",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Cool Ground",
+        "canonical": "#f5f5f7",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 286.4)",
+          "oklch(26.4% 0.003 286.4)",
+          "oklch(37.9% 0.003 286.4)",
+          "oklch(49.3% 0.003 286.4)",
+          "oklch(60.7% 0.003 286.4)",
+          "oklch(72.1% 0.003 286.4)",
+          "oklch(83.6% 0.003 286.4)",
+          "oklch(95.0% 0.003 286.4)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Panel White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.4% 0.000 89.9)",
+          "oklch(37.9% 0.000 89.9)",
+          "oklch(49.3% 0.000 89.9)",
+          "oklch(60.7% 0.000 89.9)",
+          "oklch(72.1% 0.000 89.9)",
+          "oklch(83.6% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
+      "on-dark": {
+        "role": "neutral",
+        "displayName": "White on Dark",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.4% 0.000 89.9)",
+          "oklch(37.9% 0.000 89.9)",
+          "oklch(49.3% 0.000 89.9)",
+          "oklch(60.7% 0.000 89.9)",
+          "oklch(72.1% 0.000 89.9)",
+          "oklch(83.6% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#1d1d1f",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 286.1)",
+          "oklch(26.4% 0.004 286.1)",
+          "oklch(37.9% 0.004 286.1)",
+          "oklch(49.3% 0.004 286.1)",
+          "oklch(60.7% 0.004 286.1)",
+          "oklch(72.1% 0.004 286.1)",
+          "oklch(83.6% 0.004 286.1)",
+          "oklch(95.0% 0.004 286.1)"
+        ]
+      },
+      "text-body": {
+        "role": "neutral",
+        "displayName": "Body Grey",
+        "canonical": "#424245",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 286.2)",
+          "oklch(26.4% 0.005 286.2)",
+          "oklch(37.9% 0.005 286.2)",
+          "oklch(49.3% 0.005 286.2)",
+          "oklch(60.7% 0.005 286.2)",
+          "oklch(72.1% 0.005 286.2)",
+          "oklch(83.6% 0.005 286.2)",
+          "oklch(95.0% 0.005 286.2)"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Quiet Grey",
+        "canonical": "#6e6e73",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 286.1)",
+          "oklch(26.4% 0.008 286.1)",
+          "oklch(37.9% 0.008 286.1)",
+          "oklch(49.3% 0.008 286.1)",
+          "oklch(60.7% 0.008 286.1)",
+          "oklch(72.1% 0.008 286.1)",
+          "oklch(83.6% 0.008 286.1)",
+          "oklch(95.0% 0.008 286.1)"
+        ]
+      },
+      "text-4": {
+        "role": "neutral",
+        "displayName": "Tick Grey",
+        "canonical": "#aeaeb2",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 286.3)",
+          "oklch(26.4% 0.006 286.3)",
+          "oklch(37.9% 0.006 286.3)",
+          "oklch(49.3% 0.006 286.3)",
+          "oklch(60.7% 0.006 286.3)",
+          "oklch(72.1% 0.006 286.3)",
+          "oklch(83.6% 0.006 286.3)",
+          "oklch(95.0% 0.006 286.3)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgba(0, 0, 0, 0.07)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0.0)",
+          "oklch(26.4% 0.000 0.0)",
+          "oklch(37.9% 0.000 0.0)",
+          "oklch(49.3% 0.000 0.0)",
+          "oklch(60.7% 0.000 0.0)",
+          "oklch(72.1% 0.000 0.0)",
+          "oklch(83.6% 0.000 0.0)",
+          "oklch(95.0% 0.000 0.0)"
+        ]
+      },
+      "track": {
+        "role": "neutral",
+        "displayName": "Track Grey",
+        "canonical": "#e8e8ed",
+        "tonalRamp": [
+          "oklch(15.0% 0.007 286.3)",
+          "oklch(26.4% 0.007 286.3)",
+          "oklch(37.9% 0.007 286.3)",
+          "oklch(49.3% 0.007 286.3)",
+          "oklch(60.7% 0.007 286.3)",
+          "oklch(72.1% 0.007 286.3)",
+          "oklch(83.6% 0.007 286.3)",
+          "oklch(95.0% 0.007 286.3)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Action Blue",
+        "canonical": "#0071e3",
+        "tonalRamp": [
+          "oklch(15.0% 0.193 256.2)",
+          "oklch(26.4% 0.193 256.2)",
+          "oklch(37.9% 0.193 256.2)",
+          "oklch(49.3% 0.193 256.2)",
+          "oklch(60.7% 0.193 256.2)",
+          "oklch(72.1% 0.193 256.2)",
+          "oklch(83.6% 0.193 256.2)",
+          "oklch(95.0% 0.193 256.2)"
+        ]
+      },
+      "accent-link": {
+        "role": "primary",
+        "displayName": "Link Blue",
+        "canonical": "#0066cc",
+        "tonalRamp": [
+          "oklch(15.0% 0.177 255.8)",
+          "oklch(26.4% 0.177 255.8)",
+          "oklch(37.9% 0.177 255.8)",
+          "oklch(49.3% 0.177 255.8)",
+          "oklch(60.7% 0.177 255.8)",
+          "oklch(72.1% 0.177 255.8)",
+          "oklch(83.6% 0.177 255.8)",
+          "oklch(95.0% 0.177 255.8)"
+        ]
+      },
+      "amber": {
+        "role": "secondary",
+        "displayName": "Threshold Amber",
+        "canonical": "#d99900",
+        "tonalRamp": [
+          "oklch(15.0% 0.151 78.7)",
+          "oklch(26.4% 0.151 78.7)",
+          "oklch(37.9% 0.151 78.7)",
+          "oklch(49.3% 0.151 78.7)",
+          "oklch(60.7% 0.151 78.7)",
+          "oklch(72.1% 0.151 78.7)",
+          "oklch(83.6% 0.151 78.7)",
+          "oklch(95.0% 0.151 78.7)"
+        ]
+      },
+      "red": {
+        "role": "secondary",
+        "displayName": "Threshold Red",
+        "canonical": "#db3833",
+        "tonalRamp": [
+          "oklch(15.0% 0.200 27.2)",
+          "oklch(26.4% 0.200 27.2)",
+          "oklch(37.9% 0.200 27.2)",
+          "oklch(49.3% 0.200 27.2)",
+          "oklch(60.7% 0.200 27.2)",
+          "oklch(72.1% 0.200 27.2)",
+          "oklch(83.6% 0.200 27.2)",
+          "oklch(95.0% 0.200 27.2)"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#17181b",
+        "tonalRamp": [
+          "oklch(15.0% 0.006 271.1)",
+          "oklch(26.4% 0.006 271.1)",
+          "oklch(37.9% 0.006 271.1)",
+          "oklch(49.3% 0.006 271.1)",
+          "oklch(60.7% 0.006 271.1)",
+          "oklch(72.1% 0.006 271.1)",
+          "oklch(83.6% 0.006 271.1)",
+          "oklch(95.0% 0.006 271.1)"
+        ]
+      },
+      "nav-glass": {
+        "role": "neutral",
+        "displayName": "Nav Glass",
+        "canonical": "rgba(245, 245, 247, 0.72)",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 286.4)",
+          "oklch(26.4% 0.003 286.4)",
+          "oklch(37.9% 0.003 286.4)",
+          "oklch(49.3% 0.003 286.4)",
+          "oklch(60.7% 0.003 286.4)",
+          "oklch(72.1% 0.003 286.4)",
+          "oklch(83.6% 0.003 286.4)",
+          "oklch(95.0% 0.003 286.4)"
+        ]
+      },
+      "menubar-glass": {
+        "role": "neutral",
+        "displayName": "Menu Bar Glass",
+        "canonical": "rgba(30, 32, 36, 0.5)",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 264.4)",
+          "oklch(26.4% 0.008 264.4)",
+          "oklch(37.9% 0.008 264.4)",
+          "oklch(49.3% 0.008 264.4)",
+          "oklch(60.7% 0.008 264.4)",
+          "oklch(72.1% 0.008 264.4)",
+          "oklch(83.6% 0.008 264.4)",
+          "oklch(95.0% 0.008 264.4)"
+        ]
+      },
+      "menu-glass": {
+        "role": "neutral",
+        "displayName": "Menu Glass",
+        "canonical": "rgba(44, 46, 50, 0.72)",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 264.5)",
+          "oklch(26.4% 0.008 264.5)",
+          "oklch(37.9% 0.008 264.5)",
+          "oklch(49.3% 0.008 264.5)",
+          "oklch(60.7% 0.008 264.5)",
+          "oklch(72.1% 0.008 264.5)",
+          "oklch(83.6% 0.008 264.5)",
+          "oklch(95.0% 0.008 264.5)"
+        ]
+      },
+      "terminal-tint": {
+        "role": "neutral",
+        "displayName": "Terminal Tint",
+        "canonical": "rgba(16, 17, 19, 0.86)",
+        "tonalRamp": [
+          "oklch(15.0% 0.004 264.5)",
+          "oklch(26.4% 0.004 264.5)",
+          "oklch(37.9% 0.004 264.5)",
+          "oklch(49.3% 0.004 264.5)",
+          "oklch(60.7% 0.004 264.5)",
+          "oklch(72.1% 0.004 264.5)",
+          "oklch(83.6% 0.004 264.5)",
+          "oklch(95.0% 0.004 264.5)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The single page headline."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headlines and the closing band."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The one sentence under Display."
+      },
+      "section-lede": {
+        "displayName": "Section lede",
+        "purpose": "The sentence under a Headline."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Row names in panels: steps, FAQ questions, table row heads, slider labels."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Asides and running text."
+      },
+      "body-small": {
+        "displayName": "Body small",
+        "purpose": "Table cells and FAQ answers."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Captions, table headers, meta line, footer, nav link."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Text inside pills."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Code blocks; commands and terminal use the same mono stack."
+      },
+      "status": {
+        "displayName": "Status",
+        "purpose": "The status item, sized in units of --u."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sh-card",
+        "value": "0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.05)",
+        "purpose": "The raised command pill."
+      },
+      {
+        "name": "sh-panel",
+        "value": "0 1px 3px rgba(0, 0, 0, 0.05), 0 14px 40px rgba(0, 0, 0, 0.05)",
+        "purpose": "White panels and the desktop stage."
+      },
+      {
+        "name": "sh-overlay",
+        "value": "0 2px 8px rgba(0, 0, 0, 0.1), 0 30px 80px rgba(0, 0, 0, 0.24)",
+        "purpose": "The simulated menu."
+      },
+      {
+        "name": "window",
+        "value": "0 2px 8px rgba(0, 0, 0, 0.2), 0 24px 60px rgba(0, 0, 0, 0.35)",
+        "purpose": "The simulated terminal on graphite."
+      },
+      {
+        "name": "scroll-edge",
+        "value": "0 1px 12px rgba(0, 0, 0, 0.04)",
+        "purpose": "The nav, only once scrolled past 8px."
+      },
+      {
+        "name": "segmented-thumb",
+        "value": "0 1px 3px rgba(0, 0, 0, 0.12)",
+        "purpose": "The sliding segmented thumb."
+      },
+      {
+        "name": "slider-thumb",
+        "value": "0 1px 3px rgba(0, 0, 0, 0.25), 0 3px 10px rgba(0, 0, 0, 0.12)",
+        "purpose": "The range slider thumb."
+      },
+      {
+        "name": "cmd-dark-ring",
+        "value": "inset 0 0 0 1px rgba(255, 255, 255, 0.12)",
+        "purpose": "Edge of the command pill on graphite."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-spring",
+        "value": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "purpose": "The menu materializing: 0.4s in, 0.26s out, with opacity, scale and blur together."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.25, 1, 0.5, 1)",
+        "purpose": "Small moves: segmented slide and status tint at 0.25s, copy icon swap."
+      },
+      {
+        "name": "press",
+        "value": "transform 0.1s ease-out",
+        "purpose": "Press feedback: scale 0.97 on pills, 0.92 on the copy button, 1.08 on the slider thumb."
+      },
+      {
+        "name": "state",
+        "value": "0.15s",
+        "purpose": "Hover color and background changes."
+      },
+      {
+        "name": "scroll-edge",
+        "value": "0.3s",
+        "purpose": "Nav hairline and shadow appearing on scroll."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "680px"
+      },
+      {
+        "name": "md",
+        "value": "860px"
+      },
+      {
+        "name": "lg",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Install Pill",
+      "kind": "button",
+      "refersTo": "nav-pill",
+      "description": "The one blue button, in the nav, jumping to install.",
+      "html": "<a class=\"ds-nav-pill\" href=\"#install\">Install</a>",
+      "css": ".ds-nav-pill { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: var(--accent, #0071e3); color: #fff; font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); font-size: 13px; font-weight: 600; text-decoration: none; transition: transform 0.1s ease-out, background-color 0.15s; } .ds-nav-pill:hover { background: var(--accent-link, #0066cc); } .ds-nav-pill:active { transform: scale(0.97); } .ds-nav-pill:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; }"
+    },
+    {
+      "name": "Command Pill",
+      "kind": "custom",
+      "refersTo": "cmd",
+      "description": "The primary call to action: a real command with a copy button, raised on the page.",
+      "html": "<div class=\"ds-cmd ds-cmd-raised\"><code>brew install morox-ai/tap/cc-limits</code><button class=\"ds-copy\" type=\"button\" aria-label=\"Copy install command\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"12\" height=\"12\" rx=\"2.5\"/><path d=\"M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5\"/></svg></button></div>",
+      "css": ".ds-cmd { display: inline-flex; align-items: center; gap: 4px; min-height: 50px; padding: 3px 3px 3px 18px; border-radius: 999px; } .ds-cmd code { font-family: var(--mono, ui-monospace, 'SF Mono', Menlo, monospace); font-size: 14.5px; white-space: nowrap; } .ds-copy { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--text-2, #6e6e73); cursor: pointer; transition: background-color 0.15s, color 0.15s, transform 0.1s ease-out; } .ds-copy svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; } .ds-copy:hover { background: rgba(0, 0, 0, 0.05); color: var(--text, #1d1d1f); } .ds-copy:active { transform: scale(0.92); } .ds-copy:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; } .ds-cmd-raised { background: var(--surface, #fff); color: var(--text, #1d1d1f); box-shadow: var(--sh-card, 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.05)); }"
+    },
+    {
+      "name": "Command Pill on Graphite",
+      "kind": "custom",
+      "refersTo": "cmd-dark",
+      "description": "The same pill on a graphite ground, as in the closing band.",
+      "html": "<div class=\"ds-dark-ground\"><div class=\"ds-cmd ds-cmd-dark\"><code>brew install morox-ai/tap/cc-limits</code><button class=\"ds-copy\" type=\"button\" aria-label=\"Copy install command\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"12\" height=\"12\" rx=\"2.5\"/><path d=\"M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5\"/></svg></button></div></div>",
+      "css": ".ds-cmd { display: inline-flex; align-items: center; gap: 4px; min-height: 50px; padding: 3px 3px 3px 18px; border-radius: 999px; } .ds-cmd code { font-family: var(--mono, ui-monospace, 'SF Mono', Menlo, monospace); font-size: 14.5px; white-space: nowrap; } .ds-copy { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--text-2, #6e6e73); cursor: pointer; transition: background-color 0.15s, color 0.15s, transform 0.1s ease-out; } .ds-copy svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; } .ds-copy:hover { background: rgba(0, 0, 0, 0.05); color: var(--text, #1d1d1f); } .ds-copy:active { transform: scale(0.92); } .ds-copy:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; } .ds-dark-ground { padding: 28px; border-radius: 26px; background: var(--graphite, #17181b); } .ds-cmd-dark { background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); color: #fff; } .ds-cmd-dark .ds-copy { color: rgba(255, 255, 255, 0.72); } .ds-cmd-dark .ds-copy:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }"
+    },
+    {
+      "name": "Unified Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "White panel with hairline rows; the only container, with padding held by its rows.",
+      "html": "<dl class=\"ds-panel\"><div class=\"ds-row\"><dt>How fresh are the numbers?</dt><dd>It asks every 5 minutes.</dd></div><div class=\"ds-row\"><dt>Is this official?</dt><dd>Not even slightly.</dd></div></dl>",
+      "css": ".ds-panel { margin: 0; overflow: hidden; border-radius: 22px; background: var(--surface, #fff); box-shadow: var(--sh-panel, 0 1px 3px rgba(0, 0, 0, 0.05), 0 14px 40px rgba(0, 0, 0, 0.05)); font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); } .ds-row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 6px 32px; padding: 20px 28px; } .ds-row + .ds-row { border-top: 1px solid var(--hairline, rgba(0, 0, 0, 0.07)); } .ds-row dt { color: var(--text, #1d1d1f); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.4; } .ds-row dd { margin: 0; color: var(--text-body, #424245); font-size: 15.5px; line-height: 1.55; }"
+    },
+    {
+      "name": "Glass Nav",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Sticky frosted bar with brand mark, one text link and the Install pill.",
+      "html": "<header class=\"ds-nav\"><a class=\"ds-brand\" href=\"#top\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"9\" width=\"20\" height=\"6\" rx=\"3\" fill=\"currentColor\" opacity=\".22\"/><rect x=\"2\" y=\"9\" width=\"13\" height=\"6\" rx=\"3\" fill=\"currentColor\"/></svg><span>cc-limits</span></a><nav class=\"ds-links\"><a class=\"ds-link\" href=\"#github\">GitHub</a><a class=\"ds-pill\" href=\"#install\">Install</a></nav></header>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 54px; padding: 0 22px; background: var(--nav-glass, rgba(245, 245, 247, 0.72)); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--hairline, rgba(0, 0, 0, 0.07)); font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); } .ds-brand { display: flex; align-items: center; gap: 8px; min-height: 44px; color: var(--text, #1d1d1f); font-size: 15px; font-weight: 650; letter-spacing: -0.01em; text-decoration: none; } .ds-brand svg { width: 22px; height: 22px; } .ds-links { display: flex; align-items: center; gap: 18px; } .ds-link { color: var(--text-body, #424245); font-size: 13.5px; text-decoration: none; } .ds-link:hover { color: var(--text, #1d1d1f); } .ds-pill { display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 999px; background: var(--accent, #0071e3); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; } .ds-pill:hover { background: var(--accent-link, #0066cc); } .ds-brand:focus-visible, .ds-link:focus-visible, .ds-pill:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; }"
+    },
+    {
+      "name": "Status Item",
+      "kind": "custom",
+      "refersTo": "status-item",
+      "description": "The product itself: bars, percentages and reset times at the app's proportions, scaled by one unit. Shown with Claude Code at amber.",
+      "html": "<div class=\"ds-menubar\"><button class=\"ds-status-btn\" type=\"button\" aria-label=\"Claude Code 61 percent used, Codex 24 percent used\"><span class=\"ds-status\"><span class=\"ds-group ds-amber\"><span class=\"ds-bar\"><i style=\"--w: 13.42\"></i></span><span class=\"ds-num\">61%</span><span class=\"ds-num\">5:10</span></span><span class=\"ds-sep\">│</span><span class=\"ds-group\"><span class=\"ds-bar\"><i style=\"--w: 5.28\"></i></span><span class=\"ds-num\">24%</span><span class=\"ds-num\">6:43</span></span></span></button></div>",
+      "css": ".ds-menubar { display: inline-flex; align-items: center; height: 40px; padding: 0 14px; background: var(--graphite, #17181b); } .ds-status-btn { display: inline-flex; align-items: center; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; cursor: pointer; transition: background-color 0.12s; } .ds-status-btn:hover { background: rgba(255, 255, 255, 0.16); } .ds-status-btn:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; } .ds-status { --u: 1.55px; display: inline-flex; align-items: center; color: #fff; font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); font-size: calc(var(--u) * 11); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; } .ds-group { display: inline-flex; align-items: center; transition: color 0.25s cubic-bezier(0.25, 1, 0.5, 1); } .ds-amber { color: var(--amber, #d99900); } .ds-bar { position: relative; display: block; width: calc(var(--u) * 22); height: calc(var(--u) * 5); overflow: hidden; border-radius: 999px; background: color-mix(in srgb, currentColor 25%, transparent); } .ds-bar i { position: absolute; inset: 0 auto 0 0; width: calc(var(--u) * var(--w, 0)); border-radius: inherit; background: currentColor; } .ds-num { margin-left: calc(var(--u) * 4); } .ds-sep { margin: 0 calc(var(--u) * 6); opacity: 0.5; }"
+    },
+    {
+      "name": "Threshold Slider",
+      "kind": "input",
+      "refersTo": "panel",
+      "description": "Native range input with tick marks at exactly 60% and 80%, compensated for thumb width.",
+      "html": "<label class=\"ds-slider\"><span class=\"ds-slider-label\">Claude Code</span><input type=\"range\" min=\"0\" max=\"100\" value=\"61\"><output class=\"ds-slider-value\">61%</output></label>",
+      "css": ".ds-slider { --t60: calc(13px + (100% - 26px) * 0.6); --t80: calc(13px + (100% - 26px) * 0.8); --ticks: linear-gradient(90deg, var(--track, #e8e8ed) calc(var(--t60) - 1px), var(--text-4, #aeaeb2) calc(var(--t60) - 1px) calc(var(--t60) + 1px), var(--track, #e8e8ed) calc(var(--t60) + 1px) calc(var(--t80) - 1px), var(--text-4, #aeaeb2) calc(var(--t80) - 1px) calc(var(--t80) + 1px), var(--track, #e8e8ed) calc(var(--t80) + 1px)); display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: baseline; padding: 18px 28px 20px; background: var(--surface, #fff); font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); } .ds-slider-label { color: var(--text, #1d1d1f); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; } .ds-slider-value { color: var(--text-2, #6e6e73); font-size: 15px; font-variant-numeric: tabular-nums; } .ds-slider input { grid-row: 2; grid-column: 1 / -1; width: 100%; height: 44px; margin: 0; background: transparent; cursor: grab; -webkit-appearance: none; appearance: none; } .ds-slider input:active { cursor: grabbing; } .ds-slider input:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; } .ds-slider input::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: var(--ticks); } .ds-slider input::-moz-range-track { height: 6px; border-radius: 999px; background: var(--ticks); } .ds-slider input::-webkit-slider-thumb { width: 26px; height: 26px; margin-top: -10px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 3px 10px rgba(0, 0, 0, 0.12); transition: transform 0.1s ease-out; -webkit-appearance: none; appearance: none; } .ds-slider input::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 3px 10px rgba(0, 0, 0, 0.12); } .ds-slider input:active::-webkit-slider-thumb { transform: scale(1.08); }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "refersTo": "segmented",
+      "description": "Neutral pill trough with a sliding white thumb; works on light and dark grounds.",
+      "html": "<div class=\"ds-seg\" role=\"group\" aria-label=\"Appearance\"><button type=\"button\" aria-pressed=\"true\">Dark</button><button type=\"button\" aria-pressed=\"false\">Light</button></div>",
+      "css": ".ds-seg { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 3px; border-radius: 999px; background: rgba(127, 127, 127, 0.24); font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); } .ds-seg::before { content: ''; position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px); border-radius: 999px; background: var(--surface, #fff); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1); } .ds-seg:has(button:last-child[aria-pressed='true'])::before { transform: translateX(100%); } .ds-seg button { position: relative; min-width: 56px; height: 30px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: var(--text-body, #424245); font: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: color 0.2s; } .ds-seg button[aria-pressed='true'] { color: var(--text, #1d1d1f); font-weight: 600; } .ds-seg button:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; }"
+    },
+    {
+      "name": "Glass Menu",
+      "kind": "custom",
+      "refersTo": "menu",
+      "description": "The simulated menu: frosted, overlay shadow, Action Blue on the hovered action.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-menu\"><p class=\"ds-menu-head\">Claude Code</p><p class=\"ds-menu-row\">5h limit: 61% used • resets in 2:38 • at 5:10 PM</p><hr><button class=\"ds-menu-action\" type=\"button\">Refresh now<kbd>⌘R</kbd></button><button class=\"ds-menu-action\" type=\"button\">Quit<kbd>⌘Q</kbd></button></div></div>",
+      "css": ".ds-stage { padding: 24px; background: radial-gradient(60% 90% at 88% 0%, rgba(74, 110, 150, 0.55), transparent 70%), radial-gradient(70% 80% at 8% 100%, rgba(40, 72, 96, 0.5), transparent 70%), var(--graphite, #17181b); } .ds-menu { max-width: 470px; padding: 6px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px; background: var(--menu-glass, rgba(44, 46, 50, 0.72)); -webkit-backdrop-filter: saturate(180%) blur(28px); backdrop-filter: saturate(180%) blur(28px); box-shadow: var(--sh-overlay, 0 2px 8px rgba(0, 0, 0, 0.1), 0 30px 80px rgba(0, 0, 0, 0.24)); color: #fff; font-family: var(--font, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif); font-size: 15px; line-height: 1.3; font-variant-numeric: tabular-nums; } .ds-menu p { margin: 0; } .ds-menu-head, .ds-menu-row, .ds-menu-action { padding: 5px 10px; } .ds-menu-head, .ds-menu-row { color: rgba(255, 255, 255, 0.72); } .ds-menu hr { height: 1px; margin: 5px 10px; border: 0; background: rgba(255, 255, 255, 0.14); } .ds-menu-action { display: flex; justify-content: space-between; width: 100%; border: 0; border-radius: 6px; background: transparent; color: #fff; font: inherit; text-align: left; cursor: pointer; } .ds-menu-action:hover, .ds-menu-action:focus-visible { background: var(--accent, #0071e3); } .ds-menu-action kbd { color: rgba(255, 255, 255, 0.6); font: inherit; }"
+    },
+    {
+      "name": "Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Real source on graphite; syntax by white weight, never by hue.",
+      "html": "<pre class=\"ds-code\" tabindex=\"0\"><code><span class=\"ds-k\">func</span> warningColor(for utilization: <span class=\"ds-t\">Double</span>) -&gt; <span class=\"ds-t\">NSColor</span>? {\n    <span class=\"ds-k\">if</span> utilization &gt; <span class=\"ds-k\">80</span> { <span class=\"ds-k\">return</span> redColor }\n    <span class=\"ds-k\">if</span> utilization &gt; <span class=\"ds-k\">60</span> { <span class=\"ds-k\">return</span> amberColor }\n    <span class=\"ds-k\">return nil</span>\n}</code></pre>",
+      "css": ".ds-code { margin: 0; overflow-x: auto; padding: 20px 22px; border-radius: 18px; background: var(--graphite, #17181b); color: rgba(255, 255, 255, 0.66); font-family: var(--mono, ui-monospace, 'SF Mono', Menlo, monospace); font-size: 13.5px; line-height: 1.7; } .ds-code code { font: inherit; } .ds-k { color: #fff; font-weight: 600; } .ds-t { color: rgba(255, 255, 255, 0.86); } .ds-code:focus-visible { outline: 2px solid var(--accent, #0071e3); outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Product Is the Page",
+    "overview": "This is a literal instruction, not a metaphor. The tiny status item and its menu are drawn at their real proportions and the page around them is quiet enough to let a 22 by 5 bar be the most interesting thing on it. The style descends from the user's `apple-liquid-glass` skill: cool ground, white panels, hairlines, system San Francisco, frost only where layers overlap. Where the build departs from that lineage, the build is what this file records.\n\nThe page runs on two grounds. The cool light ground carries reading and white panels; graphite carries the product, its code and the closing command. Density is low and copy is short, so a section is usually one heavy headline, one sentence and one panel. Hierarchy comes from size, weight and grey before it comes from color.\n\nThemed and metaphorical worlds were rejected outright by the user, including parking meters, departure boards and retro stacks. New surfaces extend this literal, product-first system rather than dressing the product up as something else.",
+    "keyCharacteristics": [
+      "Real product proportions, shown at scale on a graphite stage.",
+      "Cool #f5f5f7 ground, white unified panels, hairline rows.",
+      "One system sans at heavy weights with tight negative tracking.",
+      "Blue for action only; amber and red belong to the app's thresholds.",
+      "Glass only where layers truly overlap, with solid fallbacks."
+    ],
+    "rules": [
+      {
+        "name": "The Threshold Colors Rule",
+        "body": "Amber and red belong to the app. They appear only on a status item group, past 60% and past 80%, exactly as `warningColor` in `main.swift` assigns them. They are not the page's warning, error or highlight colors, and their values do not change for the page's convenience.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Blue Rule",
+        "body": "Blue means action and its direct feedback. No decorative blue, no blue headings, no second accent hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Graphite Stage Rule",
+        "body": "Dark is a stage for the product and its commands, not a theme. The page itself is light (`color-scheme: light`); graphite appears as bounded rounded regions on it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bigger Is Tighter Rule",
+        "body": "Tracking tightens with size: -0.04em at Display, -0.035em at Headline, -0.01em at Title and Lede, none at Body. Leading falls the same way.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "Anything that changes while being read (status item, menu rows, clock, slider value) uses tabular numerals so nothing jitters.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glass Is Seasoning Rule",
+        "body": "Frost (saturate 180% with 20px blur, 28px on the menu) goes only on the sticky nav and the simulated menu bar and menu, the places where content truly passes underneath. Panels, rows and code stay solid.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two-Layer Rule",
+        "body": "Anything that floats as a surface gets a tight contact layer plus a soft spread layer. Only the scroll edge and the segmented thumb are single and soft; no shadow is ever hard or offset.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Scroll Edge Rule",
+        "body": "The nav sits flush on the ground at the top of the page. Its hairline and shadow appear only once content is beneath it.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do show the product at its real proportions and drive it live where possible, scaling only the status item's unit.",
+      "Do group sibling content on one white panel with hairline rows.",
+      "Do make the command itself the call to action, in a pill with a copy button.",
+      "Do give every page control a 44px hit area, extending invisibly when the visual is smaller.",
+      "Do pair every frosted layer with solid fallbacks for reduced transparency and increased contrast.",
+      "Do label simulated product states and demo numbers as such.",
+      "Do keep real icons as inline stroked SVG, 1.75 to 2.25 weight, with round caps and joins. Text glyphs are fine only where the product or the terminal really prints them (`│`, `∞`, `⌘R`, `●`)."
+    ],
+    "donts": [
+      "Don't build themed or metaphorical worlds around the product; the user rejected them.",
+      "Don't use amber (#d99900) or red (#db3833) anywhere but a status item past its threshold, and don't retune them away from the app's values.",
+      "Don't introduce new hues, a warm or cream ground, or a second accent.",
+      "Don't use gradient washes on page grounds or controls. The desktop stage's two wallpaper lights are the only atmosphere; the slider track's gradient only draws ticks.",
+      "Don't put frost on panels, rows or code blocks.",
+      "Don't use hard or offset shadows.",
+      "Don't set text in Tick Grey (#aeaeb2) or lighter on the light ground.",
+      "Don't use monospace outside commands, code and terminal output."
+    ]
+  }
+}
