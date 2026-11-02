@@ -1,0 +1,44 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-11-01T21:55:37.481Z",
+        "reason": "Agent: flagged panels and bars have no direct text; each child row carries its own padding, confirmed in the desktop and mobile captures"
+      },
+      {
+        "rule": "gpt-thin-border-wide-shadow",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-11-01T21:55:37.510Z",
+        "reason": "Agent: the recreated macOS menu overlay uses the overlay shadow from the user's apple-liquid-glass tokens"
+      },
+      {
+        "rule": "nested-cards",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-11-01T21:55:37.539Z",
+        "reason": "Agent: the flagged element is an inset command pill with a copy button inside a steps panel, a control and not a card"
+      },
+      {
+        "rule": "aphoristic-cadence",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-11-01T21:55:37.564Z",
+        "reason": "Agent: short dry lines are the voice the user chose, English with character"
+      }
+    ]
+  }
+}

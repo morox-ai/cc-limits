@@ -1,2 +1,5 @@
 ClaudeCodeLimits.app/
 .DS_Store
+.impeccable/review/
+.impeccable/questions/
+.playwright-mcp/

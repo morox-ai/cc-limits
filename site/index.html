@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cc-limits: Claude Code and Codex limits in your menu bar</title>
+  <meta name="description" content="A native macOS menu bar app that shows your Claude Code and Codex usage limits and when they reset. No account, no API key, no settings.">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="cc-limits: know your limits">
+  <meta property="og:description" content="Claude Code and Codex usage, always in your Mac's menu bar.">
+  <meta property="og:url" content="https://cc-limits.morox.ai/">
+  <meta property="og:image" content="https://cc-limits.morox.ai/og.png">
+  <link rel="canonical" href="https://cc-limits.morox.ai/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" data-nav>
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="cc-limits, back to top">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="9" width="20" height="6" rx="3" fill="currentColor" opacity=".22"/><rect x="2" y="9" width="13" height="6" rx="3" fill="currentColor"/></svg>
+        <span>cc-limits</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a class="nav-link hide-sm" href="https://github.com/morox-ai/cc-limits">GitHub</a>
+        <a class="nav-pill" href="#install">Install</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <h1>Know your limits.</h1>
+        <p class="lede">Claude Code and Codex usage, always in your Mac's menu bar. Because the agent stopping mid-refactor is a bad way to check.</p>
+        <div class="cmd cmd-hero">
+          <code>brew install morox-ai/tap/cc-limits</code>
+          <button class="copy" type="button" data-copy="brew install morox-ai/tap/cc-limits" aria-label="Copy install command">
+            <svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"/></svg>
+            <svg class="i-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </button>
+        </div>
+        <p class="meta">macOS 12 or newer. Compiled on your Mac from one Swift file.</p>
+      </div>
+
+      <figure class="stage">
+      <div class="desktop" data-desktop>
+        <div class="menubar">
+          <div class="menubar-left hide-sm" aria-hidden="true">
+            <b>Terminal</b><span>Shell</span><span>Edit</span><span>View</span><span>Window</span><span>Help</span>
+          </div>
+          <div class="menubar-right">
+            <button class="status-btn" type="button" data-status-btn aria-expanded="false" aria-controls="demo-menu">
+              <span class="status" data-status role="img" aria-label="Claude Code 61 percent used, Codex 24 percent used"></span>
+            </button>
+            <svg class="tray hide-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9.5a12.5 12.5 0 0 1 17 0M7 13.2a7.6 7.6 0 0 1 10 0M10.4 16.8a2.6 2.6 0 0 1 3.2 0"/></svg>
+            <span class="clock" data-clock aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="term" aria-hidden="true">
+          <div class="term-bar"><i></i><i></i><i></i><span>~/Code/api — claude</span></div>
+          <pre><span class="dim">&gt;</span> migrate the auth middleware to the new session store
+
+<span class="dim">●</span> Read 14 files
+<span class="dim">●</span> Update src/auth/session.ts
+<span class="dim">●</span> Update src/auth/middleware.ts
+<span class="dim">●</span> Run the test suite
+  <span class="dim">212 passed, 3 failed</span>
+<span class="dim">●</span> Fixing the 3 failures…</pre>
+        </div>
+
+        <div class="menu closed" id="demo-menu" data-menu>
+          <p class="menu-head">Claude Code</p>
+          <p class="menu-row" data-row="claude-five"></p>
+          <p class="menu-row" data-row="claude-week"></p>
+          <hr>
+          <p class="menu-head">Codex</p>
+          <p class="menu-row" data-row="codex-five"></p>
+          <p class="menu-row" data-row="codex-week"></p>
+          <hr>
+          <button class="menu-action" type="button" data-menu-close>Refresh now<kbd>⌘R</kbd></button>
+          <button class="menu-action" type="button" data-menu-close>Quit<kbd>⌘Q</kbd></button>
+        </div>
+
+        </div>
+      <figcaption>Simulated, with demo numbers. Click the bars to open and close the menu.</figcaption>
+      </figure>
+    </section>
+
+    <section class="block" aria-labelledby="quiet-title">
+      <div class="block-head">
+        <h2 id="quiet-title">Quiet until it matters.</h2>
+        <p>Below 60% the bars match your menu bar and ask for nothing. Past 60% they go amber. Past 80%, red. Try it.</p>
+      </div>
+
+      <div class="panel lab">
+        <div class="lab-stage" data-stage="dark">
+          <span class="status status-lg" data-status role="img" aria-label="Claude Code 61 percent used, Codex 24 percent used"></span>
+          <div class="seg" role="group" aria-label="Menu bar appearance">
+            <button type="button" data-appearance="dark" aria-pressed="true">Dark</button>
+            <button type="button" data-appearance="light" aria-pressed="false">Light</button>
+          </div>
+        </div>
+        <div class="lab-controls">
+          <label class="slider">
+            <span class="slider-label">Claude Code</span>
+            <input type="range" min="0" max="100" value="61" autocomplete="off" data-usage="claude">
+            <output class="slider-value" data-usage-value="claude">61%</output>
+          </label>
+          <label class="slider">
+            <span class="slider-label">Codex</span>
+            <input type="range" min="0" max="100" value="24" autocomplete="off" data-usage="codex">
+            <output class="slider-value" data-usage-value="codex">24%</output>
+          </label>
+        </div>
+      </div>
+
+      <div class="split split-code">
+        <p class="aside">That's the entire alert system. No notifications, no sounds, no badge count.</p>
+        <pre class="code" tabindex="0" aria-label="The warningColor function from main.swift"><code><span class="l"><span class="k">func</span> warningColor(for utilization: <span class="t">Double</span>) -&gt; <span class="t">NSColor</span>? {</span><span class="l l-in"><span class="k">if</span> utilization &gt; <span class="n">80</span> { <span class="k">return</span> redColor }</span><span class="l l-in"><span class="k">if</span> utilization &gt; <span class="n">60</span> { <span class="k">return</span> amberColor }</span><span class="l l-in"><span class="k">return nil</span></span><span class="l">}</span></code></pre>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="needs-title">
+      <div class="block-head">
+        <h2 id="needs-title">It already has what it needs.</h2>
+        <p>No account, no API key, no settings window. If you're signed in to Claude Code or Codex, you're done.</p>
+      </div>
+
+      <div class="panel table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Tool</th><th scope="col">Reads its token from</th><th scope="col">Asks for usage at</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Claude Code</th><td data-label="Reads its token from">macOS keychain, <code>Claude Code-credentials</code></td><td data-label="Asks for usage at"><code>api.anthropic.com</code></td></tr>
+            <tr><th scope="row">Codex</th><td data-label="Reads its token from"><code>~/.codex/auth.json</code></td><td data-label="Asks for usage at"><code>chatgpt.com</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="split">
+        <p class="aside">Those are the only two network calls it makes. No analytics, no server of its own.</p>
+        <p class="aside">It touches your credentials, so read it first. One Swift file, about 550 lines, no dependencies. <a href="https://github.com/morox-ai/cc-limits/blob/main/main.swift">Read main.swift</a></p>
+      </div>
+    </section>
+
+    <section class="block" id="install" aria-labelledby="install-title">
+      <div class="block-head">
+        <h2 id="install-title">Two commands.</h2>
+        <p>One to install, one to keep it running after every login.</p>
+      </div>
+
+      <div class="panel steps">
+        <div class="step">
+          <p>Install</p>
+          <div class="cmd">
+            <code>brew install morox-ai/tap/cc-limits</code>
+            <button class="copy" type="button" data-copy="brew install morox-ai/tap/cc-limits" aria-label="Copy install command">
+              <svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="step">
+          <p>Start it, now and at every login</p>
+          <div class="cmd">
+            <code>brew services start cc-limits</code>
+            <button class="copy" type="button" data-copy="brew services start cc-limits" aria-label="Copy start command">
+              <svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"/></svg>
+              <svg class="i-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="aside aside-wide">Needs up-to-date Xcode Command Line Tools. On first launch macOS asks for keychain access: choose Always Allow. For Codex, sign in with <code>codex login</code> using a ChatGPT account.</p>
+    </section>
+
+    <section class="block" aria-labelledby="know-title">
+      <div class="block-head">
+        <h2 id="know-title">Good to know.</h2>
+      </div>
+
+      <dl class="panel faq">
+        <div>
+          <dt>Why is there a dim ∞ in my menu bar?</dt>
+          <dd>That provider hasn't loaded yet. Usually you're signed out or macOS is still waiting on keychain permission. To fix the second one, run <code>brew services stop cc-limits</code>, then <code>cc-limits</code>, choose Always Allow, quit from the menu and start the service again.</dd>
+        </div>
+        <div>
+          <dt>Does it work with an API key?</dt>
+          <dd>No. It reads subscription limits, so Claude Code needs its normal login and Codex needs a ChatGPT login. API keys get invoices instead.</dd>
+        </div>
+        <div>
+          <dt>How fresh are the numbers?</dt>
+          <dd>It asks every 5 minutes. Refresh now in the menu, or ⌘R while it's open, asks immediately.</dd>
+        </div>
+        <div>
+          <dt>Why build from source instead of a download?</dt>
+          <dd>You run the code you can read, and Gatekeeper has nothing to quarantine. Homebrew does the compiling.</dd>
+        </div>
+        <div>
+          <dt>Is this official?</dt>
+          <dd>Not even slightly. It's an independent project built on usage endpoints that aren't publicly documented, so an update on their side can break it.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="close" aria-labelledby="close-title">
+      <h2 id="close-title">Stop finding out the hard way.</h2>
+      <div class="cmd cmd-dark">
+        <code>brew install morox-ai/tap/cc-limits</code>
+        <button class="copy" type="button" data-copy="brew install morox-ai/tap/cc-limits" aria-label="Copy install command">
+          <svg class="i-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"/></svg>
+          <svg class="i-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Built by <a href="https://morox.ai">Morox</a>. Not affiliated with Anthropic or OpenAI. Claude Code and Codex belong to their owners.</p>
+    <a href="https://github.com/morox-ai/cc-limits">GitHub</a>
+  </footer>
+
+  <p class="sr-only" aria-live="polite" data-announce></p>
+  <script src="app.js"></script>
+</body>
+</html>
