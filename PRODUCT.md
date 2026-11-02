@@ -18,7 +18,7 @@ Developers on a Mac who use Claude Code, Codex, or both on a subscription and re
 
 ## Product Purpose
 
-ClaudeCodeLimits (`cc-limits`) keeps Claude Code and Codex usage limits visible in the macOS menu bar, so a limit stops being a surprise. Success: a developer installs it in one command and never again gets cut off without warning.
+cc-limits keeps Claude Code and Codex usage limits visible in the macOS menu bar, so a limit stops being a surprise. Success: a developer installs it in one command and never again gets cut off without warning.
 
 ## Positioning
 
@@ -50,7 +50,7 @@ Two providers, one menu bar item, zero setup. It reuses the credentials already 
 
 ## Brand Commitments
 
-- Names in use: `ClaudeCodeLimits` (app bundle), `cc-limits` (command and public name). The user reviewed renaming and kept `cc-limits`.
+- Names in use: `CCLimits` (app bundle), `cc-limits` (command and public name). The user reviewed renaming and kept `cc-limits`.
 - Published by the user's company, Morox (`morox-ai` on GitHub, `morox.ai`).
 - Website voice: English, short and dry, with the irony of someone a limit cut off mid-refactor.
 - Standing preference: product-first presentation in the user's `apple-liquid-glass` style. Metaphorical or themed worlds (parking meters, departure boards, retro stacks) were rejected.

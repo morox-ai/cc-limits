@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="ClaudeCodeLimits"
+APP_NAME="CCLimits"
 BUNDLE="${APP_NAME}.app"
 MACOS_DIR="${BUNDLE}/Contents/MacOS"
 INFO_PLIST="${BUNDLE}/Contents/Info.plist"
-BUNDLE_VERSION="1.0"
+BUNDLE_VERSION="1.0.1"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"

@@ -9,18 +9,18 @@ while [ -L "$SOURCE" ]; do
 done
 SCRIPT_DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
 
-APP_BUNDLE="$SCRIPT_DIR/ClaudeCodeLimits.app"
-APP_EXECUTABLE="$APP_BUNDLE/Contents/MacOS/ClaudeCodeLimits"
+APP_BUNDLE="$SCRIPT_DIR/CCLimits.app"
+APP_EXECUTABLE="$APP_BUNDLE/Contents/MacOS/CCLimits"
 
 usage() {
   cat <<USAGE
 Usage: cc-limits [--foreground] [--rebuild] [--help]
 
-Launch ClaudeCodeLimits from the terminal.
+Launch CCLimits from the terminal.
 
 Options:
   --foreground  Run the app executable in this terminal instead of opening the .app bundle.
-  --rebuild     Rebuild ClaudeCodeLimits.app before launching.
+  --rebuild     Rebuild CCLimits.app before launching.
   --help        Show this help text.
 USAGE
 }
@@ -53,7 +53,7 @@ if [[ "$REBUILD" -eq 1 ]]; then
 fi
 
 if [[ ! -x "$APP_EXECUTABLE" ]]; then
-  echo "ClaudeCodeLimits.app is not built yet." >&2
+  echo "CCLimits.app is not built yet." >&2
   echo "Build it with: bash \"$SCRIPT_DIR/build.sh\"" >&2
   exit 1
 fi

@@ -60,10 +60,10 @@ brew untap morox-ai/tap
 git clone https://github.com/morox-ai/cc-limits.git
 cd cc-limits
 bash build.sh
-open ClaudeCodeLimits.app
+open CCLimits.app
 ```
 
-`build.sh` compiles `main.swift` with the system Swift toolchain and assembles `ClaudeCodeLimits.app` in the repository root. There is no Xcode project.
+`build.sh` compiles `main.swift` with the system Swift toolchain and assembles `CCLimits.app` in the repository root. There is no Xcode project.
 
 The `cc-limits` script launches that build. Use `--rebuild` to rebuild first or `--foreground` to run the app in the current terminal.
 
@@ -76,7 +76,7 @@ launchctl load ~/Library/LaunchAgents/ai.morox.cc-limits.plist
 
 To stop it, run `launchctl unload ~/Library/LaunchAgents/ai.morox.cc-limits.plist`.
 
-If the item stays on `∞` when started this way, the keychain prompt may have had nowhere to appear. Run `open ClaudeCodeLimits.app` once and choose "Always Allow".
+If the item stays on `∞` when started this way, the keychain prompt may have had nowhere to appear. Run `open CCLimits.app` once and choose "Always Allow".
 
 ## License
 
