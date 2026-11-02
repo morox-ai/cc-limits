@@ -16,7 +16,7 @@ There is no Xcode project and no external dependency manager. The app is built d
 - `ai.morox.cc-limits.plist` — LaunchAgent config for running the app at login.
 - `ClaudeCodeLimits.app/` — generated build artifact; do not edit directly.
 - `site/` — static website with no build step, deployed by `.github/workflows/pages.yml`. `PRODUCT.md` and `DESIGN.md` govern it.
-- `packaging/homebrew/cc-limits.rb` — draft Homebrew formula that builds from source.
+- The Homebrew formula lives in `morox-ai/homebrew-tap` and builds tagged releases from source.
 
 ## Build and run
 
